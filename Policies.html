@@ -28,6 +28,8 @@ footer{border-top:1px solid var(--line);background:#fff;text-align:center;paddin
  .footer-social-links{display:flex;justify-content:center;gap:12px;margin-top:14px}.footer-social-links a{width:34px;height:34px;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:#f4dfe1;color:#9b394b;text-decoration:none}.footer-social-links a:hover{background:#9b394b;color:#fff}
 </style>
 
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Marcellus&family=Jost:wght@300;400;500;600&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
 <style id="habiba-site-polish">
 /* ===== HABIBA v3 SITE POLISH — mobile-first hero, gold accents, touch targets ===== */
 :root{
@@ -128,6 +130,153 @@ footer{border-top:1px solid var(--line);background:#fff;text-align:center;paddin
   .product-toolbar p{ font-size:11px !important; }
   .results-head{ font-size:12px !important; }
 }
+
+/* ================= HABIBA v4 — iOS parity · type · spacing · strips ================= */
+
+/* ---- 1. FONTS: Marcellus (elegant serif) + Jost (refined sans) + Tajawal for Arabic ---- */
+:root{
+  --serif:"Marcellus","Cormorant Garamond",Georgia,serif;
+  --sans:"Jost","Poppins",Arial,sans-serif;
+  --strip-a:#f7e2df;
+  --strip-b:#f8ecdb;
+  --strip-ink:#8f4d50;
+}
+
+html{ -webkit-text-size-adjust:100%; text-size-adjust:100%; }
+body{ font-family:var(--sans); -webkit-font-smoothing:antialiased; }
+
+h1,h2,h3,.serif,.hero-content h1,.section-heading h2,.hero h1{
+  font-family:var(--serif) !important;
+  font-weight:400;
+  letter-spacing:.4px;
+}
+.hero-content h1{ letter-spacing:.5px; }
+.section-heading h2{ font-weight:400; }
+
+/* ---- 2. iOS FIX: never leave the hero photo zoomed ---- */
+.hero-slide .hero-img{
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover; object-position:50% 50%;
+  transform:none !important;           /* the old 1.07 start-scale is gone */
+  -webkit-backface-visibility:hidden;
+  backface-visibility:hidden;
+  -webkit-transform:translateZ(0);
+}
+.hero-slide.active .hero-img{ transform:none !important; }
+.hero{ -webkit-mask-image:-webkit-radial-gradient(white,black); }
+
+/* ---- 3. iOS FIX: svh fallbacks (iOS < 15.4 dropped the whole declaration) ---- */
+@media (max-width:650px){
+  .hero{
+    height:430px;                       /* fallback first, then the modern one */
+    height:clamp(330px, 52svh, 430px);
+    min-height:330px;
+    max-height:430px;
+    max-height:74svh;
+    margin:0 8px;
+  }
+  .hero-slide{ background-position:50% 30% !important; }
+  .hero-slide .hero-img{ object-position:50% 30% !important; }
+}
+@media (max-width:650px) and (max-height:700px){
+  .hero{ height:330px; height:clamp(300px, 46svh, 360px); }
+}
+/* category pages: their hero rule also relied on svh */
+@media (max-width:650px){
+  .hero-photo{ object-position:50% 26% !important; }
+}
+@supports not (height: 100svh){
+  @media (max-width:650px){
+    .hero{ height:420px !important; max-height:420px !important; }
+  }
+}
+
+/* ---- 4. ICONS: smaller glyphs, same comfortable tap targets ---- */
+@media (max-width:650px){
+  .icon-btn{ width:42px; height:42px; min-width:42px; min-height:42px; }
+  .icon-btn i, .icon-btn .fa-solid{ font-size:15.5px !important; }
+  .benefit > i{ font-size:15px !important; }
+  .quick-icon{ width:38px; height:38px; font-size:15px !important; }
+  .quick-icon i{ font-size:15px !important; }
+  .add-cart i{ font-size:13px !important; }
+  .whatsapp-float{ width:46px; height:46px; font-size:20px !important; }
+  .hero-arrow i{ font-size:12px; }
+}
+
+/* ---- 5. PHONE LAYOUT: tighter, calmer vertical rhythm ---- */
+@media (max-width:650px){
+  .announcement{ font-size:9.5px; padding:7px 10px; letter-spacing:.8px; }
+  .header{ height:70px; padding:6px 11px; }
+  .brand img{ width:116px; height:52px; }
+  .main-nav{ padding:0 11px 9px; }
+  .main-nav a{ font-size:10.5px; letter-spacing:.3px; }
+
+  .section{ padding:40px 13px 6px; }
+  .section-heading{ margin-bottom:18px; }
+  .section-heading h2{ font-size:clamp(26px, 7.4vw, 32px); }
+  .section-heading p{ font-size:12px; }
+
+  .benefits{ gap:14px 6px; padding:18px 11px; margin:14px 0 0; }
+  .benefit{ gap:6px; }
+  .benefit h4{ font-size:10px; letter-spacing:.4px; }
+  .benefit p{ font-size:9.5px; line-height:1.5; }
+
+  .product-grid{ gap:11px; }
+  .product-image{ height:auto; aspect-ratio:1/1.16; }
+  .product-card{ border-radius:14px; }
+  .product-info{ padding:10px 10px 12px; }
+  .product-info h3{ font-size:12px; line-height:1.45; }
+  .price{ font-size:13px; }
+
+  .category-card{ flex-basis:66%; }
+  .category-image{ height:180px; }
+  .category-info h3{ font-size:18px; }
+
+  .footer-grid{ gap:22px; }
+  .footer{ padding:34px 14px 18px; }
+}
+
+/* ---- 6. STRIPS ARE BACK — warm champagne, no more near-black ---- */
+.bundles-ticker{
+  background:linear-gradient(90deg,var(--strip-a) 0%,var(--strip-b) 34%,#f2d3ce 66%,var(--strip-a) 100%);
+  color:var(--strip-ink) !important;
+  border-top:1px solid rgba(201,162,39,.38);
+  border-bottom:1px solid rgba(201,162,39,.38);
+  padding:9px 0;
+  margin:10px 0 14px;
+  font-family:"Tajawal","Jost",sans-serif !important;
+  font-size:11.5px;
+  font-weight:500;
+  letter-spacing:2.6px;
+  overflow:hidden;
+  visibility:visible;
+}
+.bundles-ticker span{
+  display:inline-block; min-width:100%;
+  animation-name:habibaTicker;
+  animation-duration:var(--ticker-speed,18s);
+  animation-timing-function:linear;
+  animation-iteration-count:infinite;
+  will-change:transform;
+}
+/* every other dark strip on the site gets the same warm treatment */
+#bundleTicker, #homeMiddleAnnouncement{
+  background:linear-gradient(90deg,var(--strip-a),var(--strip-b),var(--strip-a)) !important;
+  color:var(--strip-ink) !important;
+  border-top:1px solid rgba(201,162,39,.38);
+  border-bottom:1px solid rgba(201,162,39,.38);
+}
+.announcement{ background:linear-gradient(90deg,#e7bdbd,#d9a8a9) !important; color:#fff !important; }
+
+/* ---- 7. sticky bar polish to match the new type ---- */
+@media (max-width:650px){
+  .mbb-main{ font-family:var(--sans); letter-spacing:1px; font-size:12.5px; }
+  .mbb-cart span:not(.mbb-count){ font-size:9px; letter-spacing:.5px; }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .bundles-ticker span{ animation:none; }
+}
 </style>
 
 </head>
@@ -142,6 +291,8 @@ footer{border-top:1px solid var(--line);background:#fff;text-align:center;paddin
 <h1>Store Policies</h1>
 <p>سياسات متجر حبيبة لمساعدتك على التسوق بثقة ووضوح.</p>
 </section>
+<div class="bundles-ticker" aria-label="Store announcement"><span data-store-ticker>حبيبة</span></div>
+
 <main class="wrap">
 <aside class="side">
 <h2>محتويات السياسات</h2>
@@ -232,7 +383,7 @@ footer{border-top:1px solid var(--line);background:#fff;text-align:center;paddin
 #habibaSharedCart .hsc-head{display:flex;align-items:center;justify-content:space-between;padding:22px;border-bottom:1px solid #eadfda}#habibaSharedCart h2{font-size:22px;margin:0}#habibaSharedCart button{cursor:pointer;font:inherit}#habibaSharedCart .hsc-close{border:0;background:transparent;font-size:28px}#habibaSharedCart .hsc-items{padding:14px 20px;overflow:auto;flex:1}#habibaSharedCart .hsc-item{display:grid;grid-template-columns:70px 1fr;gap:12px;padding:13px 0;border-bottom:1px solid #eee2dd}#habibaSharedCart .hsc-item img{width:70px;height:82px;object-fit:cover;border-radius:8px}#habibaSharedCart .hsc-item h3{font-size:14px;margin:0 0 5px}#habibaSharedCart .hsc-muted{font-size:12px;color:#85777b}#habibaSharedCart .hsc-controls{display:flex;align-items:center;gap:10px;margin-top:8px}#habibaSharedCart .hsc-controls button{width:27px;height:27px;border:1px solid #ddceca;background:white;border-radius:5px}#habibaSharedCart .hsc-remove{border:0!important;text-decoration:underline;color:#8b626d;background:transparent!important;width:auto!important;margin-left:auto}#habibaSharedCart .hsc-foot{padding:20px;border-top:1px solid #eadfda}#habibaSharedCart .hsc-total{display:flex;justify-content:space-between;font-weight:700;margin-bottom:15px}#habibaSharedCart .hsc-checkout{display:block;width:100%;padding:14px;background:#51333e;color:white;border:0;border-radius:4px;text-align:center;text-decoration:none;font-weight:700;letter-spacing:.04em}#habibaSharedCart .hsc-empty{text-align:center;padding:50px 10px;color:#78666c}
 
     /* --- Shared scrolling ticker (same strip as the Bundles page) --- */
-    .bundles-ticker{overflow:hidden;background:var(--rose-deep,#402d2e);color:#fff;text-align:center;padding:13px;margin:0 0 10px;letter-spacing:2px}
+    .bundles-ticker{overflow:hidden;text-align:center;padding:13px;margin:0 0 10px;letter-spacing:2px}
     .bundles-ticker span{display:inline-block;min-width:100%;animation-name:habibaTicker;animation-duration:var(--ticker-speed,18s);animation-timing-function:linear;animation-iteration-count:infinite}
     @keyframes habibaTicker{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
     @media(prefers-reduced-motion:reduce){.bundles-ticker span{animation:none;transform:none}}
