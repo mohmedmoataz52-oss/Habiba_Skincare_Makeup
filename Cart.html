@@ -1559,7 +1559,110 @@ input:focus-visible {
 .policy-contact{font-weight:700;color:var(--rose-deep);white-space:nowrap}
 @media(max-width:700px){.policy-section{padding:0 15px;margin:24px auto 38px}.policy-grid{grid-template-columns:1fr}.policy-item{padding:16px}}
 
-</style></head><body>
+</style>
+<style id="habiba-site-polish">
+/* ===== HABIBA v3 SITE POLISH — mobile-first hero, gold accents, touch targets ===== */
+:root{
+  --muted:#7d6363;
+  --gold:#c9a227;
+}
+
+/* --- hero photo becomes a real <img> (sharp on retina, small payload on phones) --- */
+.hero-slide .hero-img{
+  position:absolute; inset:0; width:100%; height:100%;
+  object-fit:cover; object-position:50% 50%;
+  transform:scale(1.07);
+  transition:transform 8s ease-out;
+  will-change:transform;
+}
+.hero-slide.active .hero-img{ transform:scale(1); }
+.hero-slide::before{ z-index:1; }
+.hero-content{ z-index:2; }
+.hero-arrow,.hero-dots{ z-index:4; }
+
+/* --- gold hairline accents (kicker + section headings) --- */
+.hero-kicker::after,
+.eyebrow::after{
+  content:""; display:block; width:34px; height:2px; margin-top:9px;
+  background:linear-gradient(90deg,var(--gold),rgba(201,162,39,0));
+  border-radius:2px;
+}
+.hero-copy .eyebrow::after{ margin:9px auto 0; }
+.section-heading h2::after{
+  content:""; display:block; width:44px; height:2px; margin:12px auto 0;
+  background:linear-gradient(90deg,var(--gold),rgba(201,162,39,0));
+  border-radius:2px;
+}
+.old-price{ color:#a9928f; }
+
+/* --- category page hero: keep the photo readable on tall narrow screens --- */
+.hero-photo{ will-change:transform; }
+
+@media (max-width:650px){
+  /* readable body copy in the hero */
+  .hero-content p{ font-size:15px; line-height:1.75; max-width:34ch; }
+  .hero-kicker{ font-size:11px; letter-spacing:2.4px; }
+  .hero-slide .hero-img{ object-position:50% 24%; }
+
+  /* comfortable tap targets (44px minimum) */
+  .icon-btn{ min-width:44px; min-height:44px; }
+  .add-cart{ min-width:44px; min-height:44px; }
+  .primary-btn{ min-height:46px; }
+
+  /* room for the sticky bar */
+  body{ padding-bottom:76px; }
+}
+
+/* --- sticky mobile buy bar --- */
+.mobile-buybar{ display:none; }
+@media (max-width:650px){
+  .mobile-buybar{
+    position:fixed; left:0; right:0; bottom:0; z-index:480;
+    display:flex; gap:8px;
+    padding:9px 12px calc(9px + env(safe-area-inset-bottom));
+    background:rgba(255,248,248,.97);
+    -webkit-backdrop-filter:blur(10px); backdrop-filter:blur(10px);
+    border-top:1px solid var(--border);
+    box-shadow:0 -6px 20px rgba(143,77,80,.10);
+  }
+  .mbb-cart{
+    position:relative; display:flex; flex-direction:column;
+    align-items:center; justify-content:center; gap:1px;
+    min-width:66px; min-height:48px; background:#fff;
+    border:1px solid var(--border); border-radius:14px;
+    color:var(--rose-deep); font-size:10px; text-decoration:none;
+  }
+  .mbb-cart i{ font-size:17px; }
+  .mbb-count{
+    position:absolute; top:-7px; right:5px; min-width:18px; height:18px;
+    border-radius:9px; background:var(--rose-dark); color:#fff;
+    font-size:10px; line-height:18px; text-align:center; padding:0 4px;
+  }
+  .mbb-main{
+    flex:1; display:flex; align-items:center; justify-content:center;
+    min-height:48px; border-radius:14px; background:var(--rose-deep);
+    color:#fff; text-decoration:none; font-size:13px; letter-spacing:.5px;
+  }
+  .mbb-main:active{ transform:scale(.99); }
+  .whatsapp-float{ bottom:82px !important; }
+}
+
+@media (prefers-reduced-motion:reduce){
+  .hero-slide .hero-img{ transition:none; transform:none; }
+}
+
+@media (max-width:650px){
+  .hero-copy p{ font-size:13px !important; line-height:1.6; }
+  .hero-copy .eyebrow{ font-size:9px !important; letter-spacing:1.6px; }
+  .quick-cat{ font-size:10.5px !important; }
+  .benefit p{ font-size:10px !important; }
+  .benefit h4{ font-size:10.5px !important; }
+  .product-toolbar p{ font-size:11px !important; }
+  .results-head{ font-size:12px !important; }
+}
+</style>
+
+</head><body>
 <div class="announcement" data-shipping-announcement>FREE SHIPPING ON ORDERS OVER EGP 1,000</div>
 
 <!-- =====================================
@@ -1568,12 +1671,12 @@ input:focus-visible {
 <header class="header">
 
   <div class="header-left">
-    <a class="icon-btn" href="Home bage.html" aria-label="Back to home"><i class="fa-solid fa-arrow-left"></i></a>
-    <a class="icon-btn" href="Home bage.html#bestsellers" aria-label="Search products"><i class="fa-solid fa-magnifying-glass"></i></a>
+    <a class="icon-btn" href="index.html" aria-label="Back to home"><i class="fa-solid fa-arrow-left"></i></a>
+    <a class="icon-btn" href="index.html#bestsellers" aria-label="Search products"><i class="fa-solid fa-magnifying-glass"></i></a>
   </div>
 
   <!-- Replace this URL with your own logo image if needed -->
-  <a href="Home bage.html" class="brand" aria-label="Habiba Skin Care home">
+  <a href="index.html" class="brand" aria-label="Habiba Skin Care home">
 <img 
       src="WhatsApp Image 2026-10-20 at 9.05.57 PM.svg"
       alt="Habiba Skin Care logo">
@@ -1595,20 +1698,18 @@ input:focus-visible {
 <!-- Desktop navigation -->
 <nav class="main-nav" aria-label="Main navigation">
   <ul>
-    <li><a href="Home bage.html">Home</a></li>
-    <li><a href="Skin Care.html">Skin Care</a></li>
-    <li><a href="Hair Care.html">Hair Care</a></li>
-    <li><a href="Body Care.html">Body Care</a></li>
+    <li><a href="index.html">Home</a></li>
+    <li><a href="skincare.html">Skin Care</a></li>
+    <li><a href="haircare.html">Hair Care</a></li>
+    <li><a href="bodycare.html">Body Care</a></li>
     <li><a href="Makeup.html">Makeup</a></li>
      <li><a href="Perfume.html">Perfume</a></li><li><a href="Bundles.html">Bundles</a></li>
-    <li><a href="Underarm & Bikini Butter.html">Bikini Area</a></li>
-    <li><a href="Underarm & Bikini Butter.html">Underarm</a></li>
+    <li><a href="underarm-bikini.html">Bikini Area</a></li>
+    <li><a href="underarm-bikini.html">Underarm</a></li>
     <li><a href="#bestsellers">Best Sellers</a></li>
   </ul>
 </nav>
-<div class="bundles-ticker" aria-label="Store announcement" style="visibility:hidden"><span id="siteTickerCart" data-store-ticker>حبيبة</span></div>
-
-<main class="cart-page"><div class="breadcrumb"><a href="Home bage.html">Home</a> / <span>Your Shopping Bag</span></div><div class="cart-title-row"><div><h1>Your Beauty Bag</h1><p id="cartSubtitle">Your favourite cosmetics, all in one place.</p></div><a class="continue-link" href="Home bage.html#bestsellers"><i class="fa-solid fa-arrow-left"></i> CONTINUE SHOPPING</a></div><div id="cartContent"></div></main>
+<main class="cart-page"><div class="breadcrumb"><a href="index.html">Home</a> / <span>Your Shopping Bag</span></div><div class="cart-title-row"><div><h1>Your Beauty Bag</h1><p id="cartSubtitle">Your favourite cosmetics, all in one place.</p></div><a class="continue-link" href="index.html#bestsellers"><i class="fa-solid fa-arrow-left"></i> CONTINUE SHOPPING</a></div><div id="cartContent"></div></main>
 
 <section class="policy-section" id="returns-policy" aria-labelledby="policyTitle">
   <div class="policy-card">
@@ -1649,7 +1750,7 @@ input:focus-visible {
   <div class="footer-grid">
 
     <div class="footer-about">
-<a href="Home bage.html" aria-label="Habiba Skin Care home"><img
+<a href="index.html" aria-label="Habiba Skin Care home"><img
         src="WhatsApp Image 2026-10-20 at 9.05.57 PM.svg"
         alt="Habiba Skin Care"
         class="footer-logo"></a>
@@ -1669,12 +1770,12 @@ input:focus-visible {
     <div class="footer-column">
       <h3>Explore</h3>
       <ul>
-        <li><a href="Skin Care.html">Skin Care</a></li>
-        <li><a href="Hair Care.html">Hair Care</a></li>
-        <li><a href="Body Care.html">Body Care</a></li>
+        <li><a href="skincare.html">Skin Care</a></li>
+        <li><a href="haircare.html">Hair Care</a></li>
+        <li><a href="bodycare.html">Body Care</a></li>
         <li><a href="Makeup.html">Makeup</a><a href="Perfume.html">Perfume</a></li><li><a href="Bundles.html">Bundles</a></li>
-        <li><a href="Underarm & Bikini Butter.html">Bikini Area</a></li>
-        <li><a href="Underarm & Bikini Butter.html">Underarm</a></li>
+        <li><a href="underarm-bikini.html">Bikini Area</a></li>
+        <li><a href="underarm-bikini.html">Underarm</a></li>
       </ul>
     </div>
 
@@ -1717,9 +1818,9 @@ function persist() { try { localStorage.setItem('habibaCart',JSON.stringify(cart
 function render() {
  
  document.getElementById('cartSubtitle').textContent = cart.reduce((n,x)=>n+x.quantity,0) + ' item(s) in your bag';
- if(!cart.length) { content.innerHTML=`<div class="empty-cart-page cart-products"><i class="fa-solid fa-bag-shopping"></i><h2>Your beauty bag is waiting</h2><p>Your bag is empty for now. Explore makeup, skincare, and beauty essentials to find your next favourite.</p><a class="shop-btn" href="Home bage.html#bestsellers">SHOP BEAUTY ESSENTIALS <i class="fa-solid fa-arrow-right"></i></a></div>`; return; }
+ if(!cart.length) { content.innerHTML=`<div class="empty-cart-page cart-products"><i class="fa-solid fa-bag-shopping"></i><h2>Your beauty bag is waiting</h2><p>Your bag is empty for now. Explore makeup, skincare, and beauty essentials to find your next favourite.</p><a class="shop-btn" href="index.html#bestsellers">SHOP BEAUTY ESSENTIALS <i class="fa-solid fa-arrow-right"></i></a></div>`; return; }
  const subtotal=cart.reduce((sum,item)=>{const p=PRODUCTS.find(p=>p.id===Number(item.id)) || item; return sum+(Number(p.price)||0)*(Number(item.quantity)||1);},0);
- content.innerHTML=`<div class="cart-layout"><section class="cart-products" aria-label="Items in your bag"><div class="cart-column-head"><span>PRODUCT</span><span style="text-align:right">TOTAL</span></div>${cart.map(item=>{const p=PRODUCTS.find(x=>x.id===Number(item.id)) || item;return `<article class="cart-line"><div class="cart-line-main"><img src="${p.image||''}" alt="${p.name||'Beauty product'}"><div><div class="category">${p.category||item.category||'Beauty'}</div><h3>${p.name||'Beauty product'}</h3><div class="unit-price">${money(Number(p.price)||0)}</div><div class="line-controls"><div class="qty-control"><button type="button" data-act="dec" data-id="${item.id}" aria-label="Decrease quantity">−</button><span>${item.quantity}</span><button type="button" data-act="inc" data-id="${item.id}" aria-label="Increase quantity">+</button></div><button class="remove-btn" type="button" data-act="remove" data-id="${item.id}">Remove</button></div></div></div><div class="line-total">${money((Number(p.price)||0)*(Number(item.quantity)||1))}</div></article>`;}).join('')}</section><aside class="order-summary"><h2>Order Summary</h2><div class="summary-row"><span>Subtotal</span><strong>${money(subtotal)}</strong></div><div class="summary-row"><span>Shipping</span><span>Confirmed on order</span></div>${(() => { const pr = window.HabibaStore ? HabibaStore.promo(subtotal) : { disc: 0, free: false, threshold: 0, pct: 0 }; let rows = ""; if (pr.disc > 0) rows += `<div class=\"summary-row\"><span>Discount ${pr.pct}%</span><strong style=\"color:#487a62\">− ${money(pr.disc)}</strong></div>`; if (pr.free) rows += `<div class=\"summary-row\"><span>Delivery</span><strong style=\"color:#487a62\">FREE ✓</strong></div>`; else if (pr.threshold > 0) rows += `<div class=\"summary-row\"><span>Delivery</span><small style=\"color:#987577\">Free from ${money(pr.threshold)}</small></div>`; return rows; })()}<div class="summary-row total"><span>Estimated total</span><strong>${money(subtotal - (window.HabibaStore ? HabibaStore.promo(subtotal).disc : 0))}</strong></div><p class="summary-note">Delivery fees and availability will be confirmed with you before your order is finalized.</p><a class="checkout-page-btn" id="checkoutCart" href="Checkout_Updated.html">PROCEED TO CHECKOUT <i class="fa-solid fa-arrow-right"></i></a><p class="secure-note"><i class="fa-solid fa-heart"></i> Your beauty routine, curated with love</p></aside></div>`;
+ content.innerHTML=`<div class="cart-layout"><section class="cart-products" aria-label="Items in your bag"><div class="cart-column-head"><span>PRODUCT</span><span style="text-align:right">TOTAL</span></div>${cart.map(item=>{const p=PRODUCTS.find(x=>x.id===Number(item.id)) || item;return `<article class="cart-line"><div class="cart-line-main"><img src="${p.image||''}" alt="${p.name||'Beauty product'}"><div><div class="category">${p.category||item.category||'Beauty'}</div><h3>${p.name||'Beauty product'}</h3><div class="unit-price">${money(Number(p.price)||0)}</div><div class="line-controls"><div class="qty-control"><button type="button" data-act="dec" data-id="${item.id}" aria-label="Decrease quantity">−</button><span>${item.quantity}</span><button type="button" data-act="inc" data-id="${item.id}" aria-label="Increase quantity">+</button></div><button class="remove-btn" type="button" data-act="remove" data-id="${item.id}">Remove</button></div></div></div><div class="line-total">${money((Number(p.price)||0)*(Number(item.quantity)||1))}</div></article>`;}).join('')}</section><aside class="order-summary"><h2>Order Summary</h2><div class="summary-row"><span>Subtotal</span><strong>${money(subtotal)}</strong></div><div class="summary-row"><span>Shipping</span><span>Confirmed on order</span></div>${(() => { const pr = window.HabibaStore ? HabibaStore.promo(subtotal) : { disc: 0, free: false, threshold: 0, pct: 0 }; let rows = ""; if (pr.disc > 0) rows += `<div class=\"summary-row\"><span>Discount ${pr.pct}%</span><strong style=\"color:#487a62\">− ${money(pr.disc)}</strong></div>`; if (pr.free) rows += `<div class=\"summary-row\"><span>Delivery</span><strong style=\"color:#487a62\">FREE ✓</strong></div>`; else if (pr.threshold > 0) rows += `<div class=\"summary-row\"><span>Delivery</span><small style=\"color:#987577\">Free from ${money(pr.threshold)}</small></div>`; return rows; })()}<div class="summary-row total"><span>Estimated total</span><strong>${money(subtotal - (window.HabibaStore ? HabibaStore.promo(subtotal).disc : 0))}</strong></div><p class="summary-note">Delivery fees and availability will be confirmed with you before your order is finalized.</p><a class="checkout-page-btn" id="checkoutCart" href="checkout.html">PROCEED TO CHECKOUT <i class="fa-solid fa-arrow-right"></i></a><p class="secure-note"><i class="fa-solid fa-heart"></i> Your beauty routine, curated with love</p></aside></div>`;
 
 }
 content.addEventListener('click',e=>{const b=e.target.closest('button[data-act]');if(!b)return;const id=Number(b.dataset.id),act=b.dataset.act;const item=cart.find(x=>x.id===id);if(!item)return;if(act==='inc')item.quantity++;if(act==='dec')item.quantity--;if(act==='remove'||item.quantity<=0)cart=cart.filter(x=>x.id!==id);persist();render();});
@@ -1736,8 +1837,37 @@ document.getElementById('currentYear').textContent=new Date().getFullYear();rend
     @keyframes habibaTicker{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
     @media(prefers-reduced-motion:reduce){.bundles-ticker span{animation:none;transform:none}}
 </style>
-<div id="habibaSharedCartOverlay"></div><aside id="habibaSharedCart" aria-label="Shopping cart" aria-hidden="true"><div class="hsc-head"><div><h2>Your Bag</h2><small id="hscCount">0 items</small></div><button class="hsc-close" id="hscClose" aria-label="Close cart">×</button></div><div class="hsc-items" id="hscItems"></div><div class="hsc-foot"><div class="hsc-total"><span>Subtotal</span><span id="hscTotal">EGP 0</span></div><a class="hsc-checkout" href="Checkout_Updated.html">CHECK OUT</a><p class="hsc-muted" style="text-align:center;margin:12px 0 0">Shipping and discounts calculated at checkout.</p></div></aside>
+<div id="habibaSharedCartOverlay"></div><aside id="habibaSharedCart" aria-label="Shopping cart" aria-hidden="true"><div class="hsc-head"><div><h2>Your Bag</h2><small id="hscCount">0 items</small></div><button class="hsc-close" id="hscClose" aria-label="Close cart">×</button></div><div class="hsc-items" id="hscItems"></div><div class="hsc-foot"><div class="hsc-total"><span>Subtotal</span><span id="hscTotal">EGP 0</span></div><a class="hsc-checkout" href="checkout.html">CHECK OUT</a><p class="hsc-muted" style="text-align:center;margin:12px 0 0">Shipping and discounts calculated at checkout.</p></div></aside>
 <script id="habibaSharedCartScript">(()=>{if(window.__habibaSharedCartInit)return;window.__habibaSharedCartInit=true;const $=id=>document.getElementById(id),panel=$('habibaSharedCart'),overlay=$('habibaSharedCartOverlay');if(!panel||!overlay)return;const money=n=>'EGP '+(Number(n)||0).toLocaleString('en-EG');const read=()=>{try{const x=JSON.parse(localStorage.getItem('habibaCart')||'[]');return Array.isArray(x)?x:[]}catch(e){return[]}};const write=x=>{try{localStorage.setItem('habibaCart',JSON.stringify(x))}catch(e){};updateBadge();render()};function updateBadge(){const c=read().reduce((n,x)=>n+(Number(x.quantity)||0),0);document.querySelectorAll('#cartCount,.cart-count').forEach(el=>el.textContent=c||'');$('hscCount').textContent=c+' item(s)'}function render(){const items=read();$('hscItems').innerHTML=items.length?items.map((p,i)=>`<article class="hsc-item"><img src="${p.image||''}" alt=""><div><h3>${p.name||'Beauty product'}</h3><div class="hsc-muted">${p.category||p.brand||'Beauty'}</div><strong>${money(p.price)}</strong><div class="hsc-controls"><button data-hsc="minus" data-i="${i}" aria-label="Decrease quantity">−</button><span>${Number(p.quantity)||1}</span><button data-hsc="plus" data-i="${i}" aria-label="Increase quantity">+</button><button class="hsc-remove" data-hsc="remove" data-i="${i}">Remove</button></div></div></article>`).join(''):'<div class="hsc-empty"><p>Your bag is empty.</p><p>Explore products and add your favourites.</p></div>';const total=items.reduce((n,p)=>n+(Number(p.price)||0)*(Number(p.quantity)||1),0);$('hscTotal').textContent=money(total);const link=$('habibaSharedCart').querySelector('.hsc-checkout');link.style.opacity=items.length?'1':'.55';link.setAttribute('aria-disabled',items.length?'false':'true');link.onclick=e=>{if(!read().length){e.preventDefault();}}}function open(){panel.classList.add('open');overlay.classList.add('open');panel.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';render()}function close(){panel.classList.remove('open');overlay.classList.remove('open');panel.setAttribute('aria-hidden','true');document.body.style.overflow=''}$('hscClose').addEventListener('click',close);overlay.addEventListener('click',close);document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});$('hscItems').addEventListener('click',e=>{const b=e.target.closest('[data-hsc]');if(!b)return;const items=read(),i=Number(b.dataset.i),p=items[i];if(!p)return;if(b.dataset.hsc==='remove')items.splice(i,1);else if(b.dataset.hsc==='plus')p.quantity=(Number(p.quantity)||1)+1;else p.quantity=(Number(p.quantity)||1)-1;if(p&&Number(p.quantity)<=0)items.splice(i,1);write(items)});document.addEventListener('click',e=>{const btn=e.target.closest('#cartButton,#cartBtn,[aria-label="Cart"],[aria-label="Open shopping cart"],button:has(#cartCount)');if(!btn)return; e.preventDefault();e.stopImmediatePropagation();open()},true);window.addEventListener('storage',e=>{if(e.key==='habibaCart'){updateBadge();render()}});window.habibaOpenCart=open;updateBadge();render()})();</script>
 <script>window.addEventListener('habiba:store-updated',()=>{try{if(typeof render==='function')render()}catch(e){}});</script>
 <script id="habibaStoreConfigLoader">window.HabibaStore&&HabibaStore.ready.catch(()=>{});</script>
+
+<div class="mobile-buybar" aria-label="Quick cart">
+  <a class="mbb-cart" href="Cart.html"><i class="fa-solid fa-bag-shopping"></i><span>CART</span><span class="mbb-count" data-mbb-count>0</span></a>
+  <a class="mbb-main" href="Cart.html">SHOP NOW</a>
+</div>
+<script id="habiba-mobile-bar">
+(function(){try{
+  var el=document.querySelector('[data-mbb-count]'); if(!el) return;
+  function count(){
+    var raw=null; try{ raw=localStorage.getItem('habibaCart'); }catch(e){}
+    if(!raw){ el.textContent='0'; return; }
+    var d=JSON.parse(raw), items=[];
+    if(Array.isArray(d)){ items=d; }
+    else if(d && Array.isArray(d.items)){ items=d.items; }
+    else if(d && d.items && typeof d.items==='object'){ items=Object.keys(d.items).map(function(k){return d.items[k];}); }
+    var n=0;
+    items.forEach(function(i){
+      var q=Number(i && (i.qty||i.quantity||i.count))||1;
+      n+=q>0?q:1;
+    });
+    el.textContent=String(n);
+  }
+  count();
+  window.addEventListener('storage',count);
+  window.addEventListener('load',count);
+  document.addEventListener('click',function(){ setTimeout(count,80); },true);
+}catch(e){}})();
+</script>
+
 </body></html>

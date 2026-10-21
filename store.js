@@ -7,7 +7,7 @@
 
    How it reads data (in order of priority):
    1. localStorage "habiba_local_dashboard_v1"
-      -> written by Habiba_Skin_Care_Dashboard.html (your private
+      -> written by dashboard.html (your private
          dashboard) in the SAME browser.
    2. habiba-store-config.json (same folder)
       -> the published snapshot you export from the dashboard
