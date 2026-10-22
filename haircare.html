@@ -316,10 +316,9 @@ input:focus-visible {
       border: 1px solid var(--line);
       border-radius: 8px;
       display: grid;
-      grid-template-columns: repeat(8, 1fr);
       padding: 12px 8px;
       gap: 6px
-    }
+    ; display:flex !important;flex-wrap:nowrap !important;grid-template-columns:none !important;overflow-x:auto !important;overflow-y:hidden !important;scroll-behavior:smooth;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;-ms-overflow-style:none;scrollbar-width:none;gap:14px !important;justify-content:flex-start; }
 
     .quick-cat {
       display: flex;
@@ -1541,9 +1540,8 @@ input:focus-visible {
       }
 
       .quick-cats {
-        grid-template-columns: repeat(4, 1fr);
         row-gap: 15px
-      }
+      ; display:flex !important;flex-wrap:nowrap !important;grid-template-columns:none !important;overflow-x:auto !important;overflow-y:hidden !important;scroll-behavior:smooth;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;-ms-overflow-style:none;scrollbar-width:none;gap:14px !important;justify-content:flex-start; }
 
       .hero {
         grid-template-columns: 25% 1fr 15%
@@ -1645,9 +1643,7 @@ input:focus-visible {
 
       .quick-cats {
         margin: 0 4% 14px;
-        padding: 10px 4px;
-        grid-template-columns: repeat(4, 1fr)
-      }
+        padding: 10px 4px;; display:flex !important;flex-wrap:nowrap !important;grid-template-columns:none !important;overflow-x:auto !important;overflow-y:hidden !important;scroll-behavior:smooth;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;-ms-overflow-style:none;scrollbar-width:none;gap:14px !important;justify-content:flex-start; }
 
       .quick-icon {
         width: 43px;
@@ -2051,6 +2047,7 @@ h1,h2,h3,.serif,.hero-content h1,.section-heading h2,.hero h1{
 }
 </style>
 
+<link rel="stylesheet" href="habiba-v5.css">
 </head>
 
 <body>
@@ -2142,7 +2139,7 @@ h1,h2,h3,.serif,.hero-content h1,.section-heading h2,.hero h1{
     </div>
     <div class="hero-mark" id="heroMark">Healthy Hair<br>Every Day</div>
   </section>
-<div class="bundles-ticker" aria-label="Store announcement"><span data-store-ticker>حبيبة</span></div>
+<div class="bundles-ticker" aria-label="Store announcement"><div class="ticker-track"><span>NEW IN THIS WEEK</span><span class="dot"></span><span>FREE SHIPPING OVER EGP 1,000</span><span class="dot"></span><span>SHOP THE EDIT</span><span class="dot"></span><span>HABIIBA · YOUR BEAUTY EDIT</span><span class="dot"></span><span>NEW IN THIS WEEK</span><span class="dot"></span><span>FREE SHIPPING OVER EGP 1,000</span><span class="dot"></span><span>SHOP THE EDIT</span><span class="dot"></span><span>HABIIBA · YOUR BEAUTY EDIT</span><span class="dot"></span></div></div>
 
 <div class="breadcrumb"><i class="fa-solid fa-house"></i><a href="index.html">Home</a><i
       class="fa-solid fa-chevron-right"></i><span id="breadcrumbCategory">Hair Care</span></div>
@@ -2351,6 +2348,86 @@ h1,h2,h3,.serif,.hero-content h1,.section-heading h2,.hero h1{
     .bundles-ticker span{display:inline-block;min-width:100%;animation-name:habibaTicker;animation-duration:var(--ticker-speed,18s);animation-timing-function:linear;animation-iteration-count:infinite}
     @keyframes habibaTicker{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
     @media(prefers-reduced-motion:reduce){.bundles-ticker span{animation:none;transform:none}}
+
+/* === strip-slider for .quick-cats (replaces the 8-column grid) === */
+.quick-cats{
+  display:flex !important;
+  flex-wrap:nowrap !important;
+  overflow-x:auto !important;
+  overflow-y:hidden !important;
+  -webkit-overflow-scrolling:touch;
+  scroll-behavior:smooth;
+  scroll-snap-type:x mandatory;
+  gap:14px !important;
+  padding:14px 16px !important;
+  margin:0 4.5% 18px !important;
+  background:#fffaf9;
+  border:1px solid var(--line);
+  border-radius:14px;
+  -ms-overflow-style:none;
+  scrollbar-width:none;
+; display:flex !important;flex-wrap:nowrap !important;grid-template-columns:none !important;overflow-x:auto !important;overflow-y:hidden !important;scroll-behavior:smooth;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;-ms-overflow-style:none;scrollbar-width:none;gap:14px !important;justify-content:flex-start; }
+.quick-cats::-webkit-scrollbar{ display:none !important; }
+.quick-cats .quick-cat{
+  flex:0 0 auto !important;
+  min-width:88px !important;
+  scroll-snap-align:start;
+}
+.quick-cats::after{ content:""; flex:0 0 8px; }
+
+/* tiny arrow strip buttons (categories pages) */
+.cat-strip-tools{
+  display:flex; gap:8px; justify-content:flex-end;
+  margin:0 4.5% 6px; max-width:none;
+}
+.cat-strip-tools button{
+  width:34px; height:34px; border-radius:50%;
+  border:1px solid #e8c8c9; background:#fff;
+  color:var(--rose, #b8626a); cursor:pointer;
+  display:grid; place-items:center;
+  transition:.2s;
+}
+.cat-strip-tools button:hover{ background:var(--rose, #b8626a); color:#fff; border-color:var(--rose, #b8626a); }
+
+/* === bundles ticker: English elegant font + infinite marquee === */
+.bundles-ticker{
+  background:linear-gradient(90deg,var(--strip-a) 0%,var(--strip-b) 34%,#f2d3ce 66%,var(--strip-a) 100%);
+  color:var(--strip-ink) !important;
+  border-top:1px solid rgba(201,162,39,.38);
+  border-bottom:1px solid rgba(201,162,39,.38);
+  padding:11px 0 !important;
+  margin:10px 0 14px !important;
+  font-family:"Playfair Display","Jost","Cormorant Garamond",Georgia,serif !important;
+  font-size:13px !important;
+  font-weight:600;
+  font-style:italic;
+  letter-spacing:4px !important;
+  text-transform:uppercase;
+  overflow:hidden;
+  visibility:visible;
+  white-space:nowrap;
+}
+.bundles-ticker .ticker-track{
+  display:inline-flex;
+  white-space:nowrap;
+  gap:60px;
+  padding-left:100%;
+  animation: habibaMarquee 28s linear infinite;
+  will-change:transform;
+}
+.bundles-ticker .ticker-track span{ display:inline-block; }
+.bundles-ticker .ticker-track .dot{
+  display:inline-block; width:6px; height:6px; border-radius:50%;
+  background:var(--strip-ink); opacity:.7; vertical-align:middle;
+}
+@keyframes habibaMarquee{
+  0%   { transform:translateX(0); }
+  100% { transform:translateX(-100%); }
+}
+@media (prefers-reduced-motion:reduce){
+  .bundles-ticker .ticker-track{ animation:none; padding-left:0; }
+}
+
 </style>
 <div id="habibaSharedCartOverlay"></div><aside id="habibaSharedCart" aria-label="Shopping cart" aria-hidden="true"><div class="hsc-head"><div><h2>Your Bag</h2><small id="hscCount">0 items</small></div><button class="hsc-close" id="hscClose" aria-label="Close cart">×</button></div><div class="hsc-items" id="hscItems"></div><div class="hsc-foot"><div class="hsc-total"><span>Subtotal</span><span id="hscTotal">EGP 0</span></div><a class="hsc-checkout" href="checkout.html">CHECK OUT</a><p class="hsc-muted" style="text-align:center;margin:12px 0 0">Shipping and discounts calculated at checkout.</p></div></aside>
 <script id="habibaSharedCartScript">(()=>{if(window.__habibaSharedCartInit)return;window.__habibaSharedCartInit=true;const $=id=>document.getElementById(id),panel=$('habibaSharedCart'),overlay=$('habibaSharedCartOverlay');if(!panel||!overlay)return;const money=n=>'EGP '+(Number(n)||0).toLocaleString('en-EG');const read=()=>{try{const x=JSON.parse(localStorage.getItem('habibaCart')||'[]');return Array.isArray(x)?x:[]}catch(e){return[]}};const write=x=>{try{localStorage.setItem('habibaCart',JSON.stringify(x))}catch(e){};updateBadge();render()};function updateBadge(){const c=read().reduce((n,x)=>n+(Number(x.quantity)||0),0);document.querySelectorAll('#cartCount,.cart-count').forEach(el=>el.textContent=c||'');$('hscCount').textContent=c+' item(s)'}function render(){const items=read();$('hscItems').innerHTML=items.length?items.map((p,i)=>`<article class="hsc-item"><img src="${p.image||''}" alt=""><div><h3>${p.name||'Beauty product'}</h3><div class="hsc-muted">${p.category||p.brand||'Beauty'}</div><strong>${money(p.price)}</strong><div class="hsc-controls"><button data-hsc="minus" data-i="${i}" aria-label="Decrease quantity">−</button><span>${Number(p.quantity)||1}</span><button data-hsc="plus" data-i="${i}" aria-label="Increase quantity">+</button><button class="hsc-remove" data-hsc="remove" data-i="${i}">Remove</button></div></div></article>`).join(''):'<div class="hsc-empty"><p>Your bag is empty.</p><p>Explore products and add your favourites.</p></div>';const total=items.reduce((n,p)=>n+(Number(p.price)||0)*(Number(p.quantity)||1),0);$('hscTotal').textContent=money(total);const link=$('habibaSharedCart').querySelector('.hsc-checkout');link.style.opacity=items.length?'1':'.55';link.setAttribute('aria-disabled',items.length?'false':'true');link.onclick=e=>{if(!read().length){e.preventDefault();}}}function open(){panel.classList.add('open');overlay.classList.add('open');panel.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';render()}function close(){panel.classList.remove('open');overlay.classList.remove('open');panel.setAttribute('aria-hidden','true');document.body.style.overflow=''}$('hscClose').addEventListener('click',close);overlay.addEventListener('click',close);document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});$('hscItems').addEventListener('click',e=>{const b=e.target.closest('[data-hsc]');if(!b)return;const items=read(),i=Number(b.dataset.i),p=items[i];if(!p)return;if(b.dataset.hsc==='remove')items.splice(i,1);else if(b.dataset.hsc==='plus')p.quantity=(Number(p.quantity)||1)+1;else p.quantity=(Number(p.quantity)||1)-1;if(p&&Number(p.quantity)<=0)items.splice(i,1);write(items)});document.addEventListener('click',e=>{const btn=e.target.closest('#cartButton,#cartBtn,[aria-label="Cart"],[aria-label="Open shopping cart"],button:has(#cartCount)');if(!btn)return; e.preventDefault();e.stopImmediatePropagation();open()},true);window.addEventListener('storage',e=>{if(e.key==='habibaCart'){updateBadge();render()}});window.habibaOpenCart=open;updateBadge();render()})();</script>

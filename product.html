@@ -768,6 +768,7 @@ h1,h2,h3,.serif,.hero-content h1,.section-heading h2,.hero h1{
 }
 </style>
 
+<link rel="stylesheet" href="habiba-v5.css">
 </head>
 
 <body>
@@ -797,7 +798,7 @@ h1,h2,h3,.serif,.hero-content h1,.section-heading h2,.hero h1{
             <li><a href="index.html#bestsellers">Best Sellers</a></li>
         </ul>
     </nav>
-<div class="bundles-ticker" aria-label="Store announcement"><span data-store-ticker>حبيبة</span></div>
+<div class="bundles-ticker" aria-label="Store announcement"><div class="ticker-track"><span>NEW IN THIS WEEK</span><span class="dot"></span><span>FREE SHIPPING OVER EGP 1,000</span><span class="dot"></span><span>SHOP THE EDIT</span><span class="dot"></span><span>HABIIBA · YOUR BEAUTY EDIT</span><span class="dot"></span><span>NEW IN THIS WEEK</span><span class="dot"></span><span>FREE SHIPPING OVER EGP 1,000</span><span class="dot"></span><span>SHOP THE EDIT</span><span class="dot"></span><span>HABIIBA · YOUR BEAUTY EDIT</span><span class="dot"></span></div></div>
 
 <div class="overlay" id="menuOverlay"></div>
     <aside class="sidebar" id="siteSidebar" aria-label="Site menu">
@@ -1258,6 +1259,87 @@ h1,h2,h3,.serif,.hero-content h1,.section-heading h2,.hero h1{
     .bundles-ticker span{display:inline-block;min-width:100%;animation-name:habibaTicker;animation-duration:var(--ticker-speed,18s);animation-timing-function:linear;animation-iteration-count:infinite}
     @keyframes habibaTicker{0%{transform:translateX(100%)}100%{transform:translateX(-100%)}}
     @media(prefers-reduced-motion:reduce){.bundles-ticker span{animation:none;transform:none}}
+
+/* === strip-slider for .quick-cats (replaces the 8-column grid) === */
+.quick-cats{
+  display:flex !important;
+  flex-wrap:nowrap !important;
+  grid-template-columns:none !important;
+  overflow-x:auto !important;
+  overflow-y:hidden !important;
+  -webkit-overflow-scrolling:touch;
+  scroll-behavior:smooth;
+  scroll-snap-type:x mandatory;
+  gap:14px !important;
+  padding:14px 16px !important;
+  margin:0 4.5% 18px !important;
+  background:#fffaf9;
+  border:1px solid var(--line);
+  border-radius:14px;
+  -ms-overflow-style:none;
+  scrollbar-width:none;
+}
+.quick-cats::-webkit-scrollbar{ display:none !important; }
+.quick-cats .quick-cat{
+  flex:0 0 auto !important;
+  min-width:88px !important;
+  scroll-snap-align:start;
+}
+.quick-cats::after{ content:""; flex:0 0 8px; }
+
+/* tiny arrow strip buttons (categories pages) */
+.cat-strip-tools{
+  display:flex; gap:8px; justify-content:flex-end;
+  margin:0 4.5% 6px; max-width:none;
+}
+.cat-strip-tools button{
+  width:34px; height:34px; border-radius:50%;
+  border:1px solid #e8c8c9; background:#fff;
+  color:var(--rose, #b8626a); cursor:pointer;
+  display:grid; place-items:center;
+  transition:.2s;
+}
+.cat-strip-tools button:hover{ background:var(--rose, #b8626a); color:#fff; border-color:var(--rose, #b8626a); }
+
+/* === bundles ticker: English elegant font + infinite marquee === */
+.bundles-ticker{
+  background:linear-gradient(90deg,var(--strip-a) 0%,var(--strip-b) 34%,#f2d3ce 66%,var(--strip-a) 100%);
+  color:var(--strip-ink) !important;
+  border-top:1px solid rgba(201,162,39,.38);
+  border-bottom:1px solid rgba(201,162,39,.38);
+  padding:11px 0 !important;
+  margin:10px 0 14px !important;
+  font-family:"Playfair Display","Jost","Cormorant Garamond",Georgia,serif !important;
+  font-size:13px !important;
+  font-weight:600;
+  font-style:italic;
+  letter-spacing:4px !important;
+  text-transform:uppercase;
+  overflow:hidden;
+  visibility:visible;
+  white-space:nowrap;
+}
+.bundles-ticker .ticker-track{
+  display:inline-flex;
+  white-space:nowrap;
+  gap:60px;
+  padding-left:100%;
+  animation: habibaMarquee 28s linear infinite;
+  will-change:transform;
+}
+.bundles-ticker .ticker-track span{ display:inline-block; }
+.bundles-ticker .ticker-track .dot{
+  display:inline-block; width:6px; height:6px; border-radius:50%;
+  background:var(--strip-ink); opacity:.7; vertical-align:middle;
+}
+@keyframes habibaMarquee{
+  0%   { transform:translateX(0); }
+  100% { transform:translateX(-100%); }
+}
+@media (prefers-reduced-motion:reduce){
+  .bundles-ticker .ticker-track{ animation:none; padding-left:0; }
+}
+
 </style>
 
 <script id="habibaStoreConfigLoader">window.HabibaStore&&HabibaStore.ready.catch(()=>{});</script>
