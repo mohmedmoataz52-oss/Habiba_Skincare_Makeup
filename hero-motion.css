@@ -115,3 +115,10 @@ html body .beauty-scene[data-kind=Perfume] .orb{display:none!important}
 }
 @keyframes habibaSafeFloat{0%,100%{translate:0 0;rotate:0deg}50%{translate:0 -7px;rotate:1deg}}
 @media(prefers-reduced-motion:reduce){html body .beauty-scene .vessel,html body .beauty-scene .orb{animation:none!important}}
+/* v13 Bundles: one continuous image with integrated copy, no split panels. */
+html body .bundles-hero{display:block!important;position:relative!important;height:300px!important;background:#f8dfe7!important;isolation:isolate}
+html body .bundles-hero>.hero-photo{position:absolute!important;inset:0!important;width:100%!important;height:100%!important;object-fit:cover!important;object-position:center 42%!important;z-index:-2!important}
+html body .bundles-hero::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(252,233,240,.08),rgba(252,233,240,.8) 48%,#fce9f0 100%);z-index:-1;pointer-events:none}
+html body .bundles-hero>.hero-copy{position:absolute!important;inset:0 4% 0 auto!important;width:53%!important;display:flex!important;justify-content:center!important;align-items:center!important;background:transparent!important;padding:16px 8px!important;text-align:center!important}
+html body .bundles-hero>.hero-copy h1{font-size:clamp(28px,4vw,44px)!important;line-height:1.1!important;white-space:normal!important}
+@media(max-width:650px){html body .bundles-hero{height:250px!important}html body .bundles-hero>.hero-copy{right:3%!important;width:56%!important}html body .bundles-hero>.hero-copy h1{font-size:28px!important}html body .bundles-hero>.hero-copy p{font-size:12px!important;line-height:1.5!important}html body .bundles-hero>.hero-photo{object-position:35% center!important}html body .bundles-hero .hero-heart{margin-top:9px!important}}
