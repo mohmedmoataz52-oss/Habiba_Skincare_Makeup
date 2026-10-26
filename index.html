@@ -11,7 +11,7 @@
 <title>Home | Habiba Skin Care</title>
 <meta name="theme-color" content="#fff8f8">
 <!-- Load the first hero photo early so the slider never flashes an empty pink box on mobile -->
-<link rel="preload" as="image" href="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=1600&q=85" fetchpriority="high">
+
 
 <!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -1985,8 +1985,8 @@ h1,h2,h3,.serif,.hero-content h1,.section-heading h2,.hero h1{
 </style>
 
 <link rel="stylesheet" href="habiba-v5.css">
-<link rel="stylesheet" href="hero-motion.css?v=9">
-</head>
+<link rel="stylesheet" href="hero-motion.css?v=10">
+<style id="hero-first-paint">html.motion-ready body .hero{background:#f5dce5!important;isolation:isolate;overflow:hidden}html.motion-ready .beauty-scene{position:absolute;inset:0;background:radial-gradient(ellipse at 75% 25%,#fff5f8,#f5dce5 45%,#d5a1bb)!important}html.motion-ready .hero-slide,html.motion-ready .hero-photo{display:none!important}</style></head>
 
 <body class="habiba-photo-bg">
 
@@ -2145,13 +2145,10 @@ h1,h2,h3,.serif,.hero-content h1,.section-heading h2,.hero h1{
 <!-- =====================================
      HERO SLIDER
 ===================================== -->
-<section class="hero" aria-label="Featured collections">
+<section class="hero" aria-label="Featured collections"><div class="beauty-scene" data-kind="index" aria-hidden="true"><div class="scene-disc"></div><div class="vessel"><img class="vessel-logo" src="WhatsApp Image 2026-10-20 at 9.05.57 PM.svg" alt=""><span class="vessel-label">HABIBA<br><small>SKIN CARE</small></span><span class="bottle-line"></span></div><div class="orb"><span>HS</span></div><div class="scene-caption">THE HABIBA BEAUTY RITUAL</div></div>
 
   <div class="hero-slide active">
-    <img class="hero-img" src="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=1600&q=85"
-      srcset="https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=800&q=78 800w, https://images.unsplash.com/photo-1570172619644-dfd03ed5d881?w=1600&q=85 1600w"
-      sizes="(max-width: 650px) 100vw, 1400px"
-      alt="Habiba Skin Care beauty essentials" fetchpriority="high" decoding="async">
+    
 
 
     <div class="hero-content">
@@ -2169,10 +2166,7 @@ h1,h2,h3,.serif,.hero-content h1,.section-heading h2,.hero h1{
   </div>
 
   <div class="hero-slide">
-    <img class="hero-img" src="https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=1600&q=85"
-      srcset="https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=800&q=78 800w, https://images.unsplash.com/photo-1556228578-8c89e6adf883?w=1600&q=85 1600w"
-      sizes="(max-width: 650px) 100vw, 1400px"
-      alt="Habiba Skin Care beauty essentials" fetchpriority="high" decoding="async">
+    
 
 
     <div class="hero-content">
@@ -2190,10 +2184,7 @@ h1,h2,h3,.serif,.hero-content h1,.section-heading h2,.hero h1{
   </div>
 
   <div class="hero-slide">
-    <img class="hero-img" src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=1600&q=85"
-      srcset="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800&q=78 800w, https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=1600&q=85 1600w"
-      sizes="(max-width: 650px) 100vw, 1400px"
-      alt="Habiba Skin Care beauty essentials" fetchpriority="high" decoding="async">
+    
 
 
     <div class="hero-content">
@@ -3288,5 +3279,5 @@ if(window.HabibaStore)HabibaStore.ready.then(()=>{renderProducts();renderCart();
 </script>
 
 <link rel="stylesheet" href="habiba-v6.css">
-<script src="hero-motion.js?v=9"></script><link rel="stylesheet" href="hero-motion.css?v=9"></body>
+<script src="hero-motion.js?v=10"></script><link rel="stylesheet" href="hero-motion.css?v=10"></body>
 </html>

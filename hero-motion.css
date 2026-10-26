@@ -50,3 +50,15 @@ html.motion-ready .hero h1{color:#80385e!important;font-size:clamp(32px,4vw,48px
 .hero-shop{background:#fff7fa88;border-color:#af7b93;color:#6d3751;padding:12px 18px;margin-top:14px}
 .real-life,.brand-story{display:block!important;visibility:visible!important;opacity:1!important}
 @media(max-width:650px){html.motion-ready body .hero,html.motion-ready body .hero:has(.beauty-scene){height:300px!important;max-height:300px!important}.beauty-scene .vessel{top:22%;left:76%;scale:.52}.beauty-scene .orb{left:61%;top:68%;scale:.5}.scene-disc{left:59%;width:38%;bottom:15%}html.motion-ready .hero .hero-copy,html.motion-ready .hero>.hero-content{left:6%!important;bottom:18%!important;max-width:66%!important}html.motion-ready .hero h1{font-size:31px!important}.hero-content p,.hero-copy p{font-size:12px!important}.hero-shop{font-size:9px;padding:11px 12px;letter-spacing:1px}.hero-kicker,.eyebrow{font-size:8px!important}.real-life h2{font-size:30px}}
+/* v10: remove inherited home centering transform; keep copy in its own column. */
+html.motion-ready body .hero>.hero-content,html.motion-ready body .hero .hero-copy{transform:none!important;top:auto!important;bottom:50%!important;translate:0 50%;left:8%!important;width:45%;max-width:520px!important;padding:0!important}
+html.motion-ready .hero>.hero-content h1{line-height:1.08!important;margin:0 0 12px!important}
+html.motion-ready .hero>.hero-content p{max-width:40ch;margin:0 0 12px;line-height:1.7}
+html.motion-ready .hero>.hero-content .primary-btn{display:none}
+.vessel-logo{position:absolute!important;top:27%;left:18%;width:64%!important;height:58px!important;object-fit:contain!important;padding:0!important;mix-blend-mode:multiply;opacity:.9}
+.vessel-label{position:absolute;top:57%;left:5%;width:90%;text-align:center;font:15px Georgia,serif;letter-spacing:2px;color:#833655}.vessel-label small{font:7px Arial,sans-serif;letter-spacing:2px}.vessel .bottle-line{top:79%}
+.beauty-scene .orb{display:grid;place-items:center;box-shadow:8px 18px 28px #864a632b,inset 0 2px 3px #fff9;border-bottom:5px solid #b888a0}
+.beauty-scene .orb>span{font:26px Georgia,serif;color:#965371;text-shadow:0 1px #fff8}
+.beauty-scene .vessel{border-right:2px solid #aa718e55;border-bottom:5px solid #aa718e44}
+@media(min-width:1000px){html.motion-ready body .hero{height:380px!important;max-height:380px!important}.beauty-scene .vessel{left:71%;top:21%;scale:.9}.scene-disc{left:60%;width:32%;bottom:9%}.beauty-scene .orb{left:60%;top:70%}.hero-shop{margin-top:8px}}
+@media(max-width:650px){html.motion-ready body .hero>.hero-content,html.motion-ready body .hero .hero-copy{width:63%;max-width:63%!important;left:6%!important;bottom:50%!important}.vessel-logo{height:52px!important}.hero-shop{margin-top:12px}}

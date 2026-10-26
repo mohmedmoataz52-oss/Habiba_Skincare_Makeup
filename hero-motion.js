@@ -5,7 +5,7 @@
  const hero=document.querySelector('.hero');
  if(hero && !['Bundles','Cart','checkout','Auth','Policies','product','dashboard'].includes(kind)){
   hero.querySelectorAll('.hero-photo,.hero-slide,.hero-arrow,.hero-dots').forEach(x=>x.style.display='none');
-  const scene=document.createElement('div');scene.className='beauty-scene';scene.dataset.kind=kind;scene.setAttribute('aria-hidden','true');scene.innerHTML='<div class="scene-disc"></div><div class="vessel"><span class="bottle-line"></span></div><div class="orb"></div><div class="scene-caption">DAILY BEAUTY RITUALS</div>';hero.prepend(scene);
+  const scene=hero.querySelector('.beauty-scene');
   // Keep original copy and logo. On the home slider reuse the first slide's copy.
   if(!hero.querySelector(':scope > .hero-content')&&hero.querySelector('.hero-content'))hero.append(hero.querySelector('.hero-content').cloneNode(true));
   const copy=hero.querySelector('.hero-copy')||hero.querySelector(':scope > .hero-content');
