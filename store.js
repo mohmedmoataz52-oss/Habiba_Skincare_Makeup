@@ -1,36 +1,4 @@
-/* =========================================================
-   HABIBA SKIN CARE — STORE.JS (shared data layer) — v2 (hardened)
-   ---------------------------------------------------------
-   This single file connects the private Dashboard to every
-   storefront page (products, bundles, announcement bar,
-   scrolling ticker, discount % and free-delivery threshold).
-
-   How it reads data (in order of priority):
-   1. localStorage "habiba_local_dashboard_v1"
-      -> written by dashboard.html (your private
-         dashboard) in the SAME browser.
-   2. habiba-store-config.json (same folder)
-      -> the published snapshot you export from the dashboard
-         and upload with the site files (works for all visitors).
-   3. Built-in defaults
-      -> used when the config file cannot be read (for example
-         when the pages are opened directly from a phone/PC as
-         local files instead of a real web address).
-
-   HARDENING (v2) — why this file never "sticks" any more:
-   - window.HabibaStore is created IMMEDIATELY and synchronously,
-     so the free-delivery threshold, the discount and the top
-     shipping bar always work, even before/without any network call.
-   - The config read is wrapped in try/catch AND in a timeout, and
-     falls back to XMLHttpRequest when fetch is unavailable or
-     refuses to run (local file:// pages, in-app browsers, old
-     phones). A failed read can no longer freeze the page.
-   - The top announcement bar is revealed as soon as the DOM exists,
-     so it can never stay hidden.
-
-   Include it on every page BEFORE other scripts with a script tag
-   whose src is store.js
-========================================================= */
+/* HABIBA shared catalogue. Reads Supabase when configured; otherwise reads the published JSON. Browser drafts never override published products. */
 (function () {
   'use strict';
 
@@ -56,16 +24,6 @@
   };
 
   /* ---------- readers ---------- */
-  function readDashboardStorage() {
-    try {
-      var raw = window.localStorage.getItem(DASH_KEY);
-      if (!raw) return null;
-      var x = JSON.parse(raw);
-      if (x && Array.isArray(x.products)) return x;
-    } catch (e) { /* ignore */ }
-    return null;
-  }
-
   /* Reads the published config file without ever throwing.
      Tries fetch first (http/https only), then XMLHttpRequest
      (which also works for local file:// pages in most browsers).
@@ -134,26 +92,6 @@
       source: fileCfg ? 'config-file' : 'defaults'
     };
 
-    var dash = readDashboardStorage();
-    if (dash) {
-      // The dashboard's saved data is ALWAYS the live source of truth in this
-      // browser, so pages can never flip back to old values between refreshes.
-      // The exported config file is only for visitors on other devices.
-      merged.settings = Object.assign({}, merged.settings, dash.settings || {});
-      var byId = {};
-      merged.products.forEach(function (p) { if (p && p.id != null) byId[p.id] = p; });
-      (dash.products || []).forEach(function (p) {
-        if (p && p.id != null) {
-          if (byId[p.id]) { Object.assign(byId[p.id], p); } else { byId[p.id] = p; }
-        }
-      });
-      merged.products = Object.keys(byId).map(function (k) { return byId[k]; });
-      var bById = {};
-      merged.bundles.forEach(function (b) { if (b && b.id != null) bById[b.id] = b; });
-      (dash.bundles || []).forEach(function (b) { if (b && b.id != null) bById[b.id] = b; });
-      merged.bundles = Object.keys(bById).map(function (k) { return bById[k]; });
-      merged.source = 'config-file + dashboard-localStorage';
-    }
     return merged;
   }
 
@@ -166,16 +104,12 @@
   }
 
   function load() {
-    return readConfigFile().then(function (fileCfg) {
+    return (window.HabibaBackend && HabibaBackend.configured ? HabibaBackend.read().then(function(row){ return row.document; }) : readConfigFile()).then(function (fileCfg) {
       state = merge(fileCfg);
       return publish();
     }).catch(function () {
-      // Absolute last resort: keep working with the dashboard copy/defaults.
-      try {
-        state = merge(null);
-        var dash = readDashboardStorage();
-        if (dash) { state = merge({ settings: dash.settings, products: dash.products, bundles: dash.bundles }); }
-      } catch (e) { /* keep whatever we already have */ }
+      // Preserve the last successful catalogue during a temporary connection failure.
+      state.source = 'connection-error';
       return publish();
     });
   }
@@ -232,12 +166,23 @@
 
     // 2) Scrolling ticker in the middle of the page (discount text etc.)
     var ticker = (s.announcementText && s.announcementText.trim()) || s.storeName || 'حبيبة';
-    var tickers = document.querySelectorAll('#homeMiddleAnnouncement, #bundleTicker, [data-store-ticker]');
-    for (var j = 0; j < tickers.length; j++) {
-      tickers[j].textContent = ticker;
-      if (tickers[j].parentElement) tickers[j].parentElement.style.visibility = 'visible';
-      tickers[j].style.visibility = 'visible';
-    }
+    document.querySelectorAll('.bundles-ticker').forEach(function(strip) {
+      if (strip.dataset.message === ticker) return;
+      strip.dataset.message = ticker;
+      strip.textContent = '';
+      var track = document.createElement('div'); track.className = 'habiba-marquee';
+      for (var group=0; group<2; group++) {
+        var part = document.createElement('div'); part.className = 'habiba-marquee-group';
+        if(group) part.setAttribute('aria-hidden','true');
+        for(var n=0;n<4;n++) {
+          var label=document.createElement('span'); label.textContent=ticker;
+          var dot=document.createElement('span'); dot.textContent='✦'; dot.setAttribute('aria-hidden','true');
+          part.append(label,dot);
+        }
+        track.appendChild(part);
+      }
+      strip.appendChild(track); strip.style.visibility='visible';
+    });
 
     // 3) Ticker speed — the number of seconds one full pass takes.
     //    Saved by the private dashboard (settings.tickerSpeed) and applied
@@ -292,9 +237,12 @@
       type: p.type || pageCategory,
       price: price,
       oldPrice: regular || price,
-      rating: 5,
-      reviews: 0,
-      color: '',
+      rating: Number(p.rating) || 0,
+      reviews: Number(p.reviews) || 0,
+      color: p.color || '',
+      stock: p.stock,
+      category: p.category,
+      shade: p.shade || '',
       tag: onSale ? 'Sale' : 'New',
       image: p.image || '',
       description: p.description || '',
@@ -333,6 +281,10 @@
 
   try {
     window.HabibaStore.ready = load();
+    if(window.HabibaBackend && HabibaBackend.configured && !location.pathname.endsWith('dashboard.html')) {
+      setInterval(function(){if(!document.hidden) load();},30000);
+      window.addEventListener('focus',load);
+    }
   } catch (e) {
     state = merge(null);
     publish();

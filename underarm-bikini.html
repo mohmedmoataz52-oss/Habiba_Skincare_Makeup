@@ -2,13 +2,15 @@
 <html lang="en">
 
 <head>
+<script src="backend-config.js"></script>
+<script src="backend.js"></script>
 <script src="store.js"></script>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
   <title>Bikini Area | Habiba Skin Care</title>
   <meta name="description" content="Discover gentle bikini area care essentials at Habiba Skin Care.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 
 <!-- Font Awesome: icons for cart, WhatsApp, menu, search, etc. -->
 <link rel="stylesheet"
@@ -48,7 +50,7 @@ body {
   font-family: var(--sans);
   color: var(--text);
   background:
-  url("dog.jpeg")center center / cover fixed no-repeat var(--bg);
+  url("dog.jpeg")center center / cover scroll no-repeat var(--bg);
   overflow-x: hidden;
 }
 
@@ -2051,7 +2053,7 @@ h1,h2,h3,.serif,.hero-content h1,.section-heading h2,.hero h1{
 <link rel="stylesheet" href="habiba-v5.css">
 </head>
 
-<body>
+<body class="habiba-photo-bg">
   <!-- =========================================================
   REUSABLE CATEGORY PAGE
   Bikini Area collection
@@ -2242,7 +2244,7 @@ h1,h2,h3,.serif,.hero-content h1,.section-heading h2,.hero h1{
       </div>
     </div>
     <div class="footer-bottom">© <span id="currentYear"></span> Habiba Skin Care. All rights reserved.</div>
-  </footer>
+  <a class="admin-entry" href="dashboard.html">Store management</a></footer>
   <div class="toast" id="toast" role="status" aria-live="polite">Added to cart</div>
   <script>
     /* =========================================================
@@ -2262,47 +2264,49 @@ h1,h2,h3,.serif,.hero-content h1,.section-heading h2,.hero h1{
        image URLs, prices, brands and descriptions.
     ========================================================= */
     const PRODUCTS = [];
-    let selectedType = "All", selectedColor = "", maxPrice = 2000, searchTerm = "", cartCount = 0;
+    let selectedType = "All", selectedColor = "", maxPrice = Infinity, searchTerm = "", cartCount = 0;
     /* ---- dashboard-driven catalog merge (store.js) ---- */
     (function(){
       function applyCatalog(){
-        if(!(window.HabibaStore)) return;
-        const dash = HabibaStore.productsForPage("Bikini Area");
-        if(!dash.length) return;
-        const key = p => (p.name||'').trim().toLowerCase();
-        const seen = new Set(PRODUCTS.map(key));
-        dash.forEach(p => { if(!seen.has(key(p))){ seen.add(key(p)); PRODUCTS.push(p); } });
+        if(!window.HabibaStore)return;
+        PRODUCTS.splice(0,PRODUCTS.length,...HabibaStore.productsForPage("Bikini Area"));
       }
-      applyCatalog();
-      if (window.HabibaStore && HabibaStore.ready && HabibaStore.ready.then) HabibaStore.ready.then(()=>{ applyCatalog(); try{ if(typeof renderProducts==='function' && document.readyState==='complete') renderProducts(); }catch(e){} });
+      window.addEventListener('habiba:store-updated',()=>{applyCatalog();if(document.readyState!=='loading')initPage();});
+      if(window.HabibaStore)HabibaStore.ready.then(()=>{applyCatalog();initPage();});
     })();
     const selectedBrands = new Set();
     const $ = id => document.getElementById(id);
     function initPage() {
       $("heroTitle").textContent = PAGE_CONFIG.title; $("heroSubtitle").textContent = PAGE_CONFIG.subtitle; $("heroEyebrow").textContent = PAGE_CONFIG.eyebrow;
       document.querySelector(".hero-photo").src = PAGE_CONFIG.heroImage; $("breadcrumbCategory").textContent = PAGE_CONFIG.title; $("searchInput").placeholder = PAGE_CONFIG.searchPlaceholder; document.title = PAGE_CONFIG.title + " | Habiba Skin Care";
-      const brands = [...new Set(PRODUCTS.map(p => p.brand))]; $("brandFilters").innerHTML = brands.map(b => `<label class="checkrow"><input type="checkbox" value="${b}"><span>${b}</span><em>(${PRODUCTS.filter(p => p.brand === b).length})</em></label>`).join("");
+      const brands = [...new Set(PRODUCTS.map(p => p.brand))]; $("brandFilters").innerHTML = brands.map(b => `<label class="checkrow"><input type="checkbox" value="${HabibaHTML(b)}"><span>${HabibaHTML(b)}</span><em>(${PRODUCTS.filter(p => p.brand === b).length})</em></label>`).join("");
       $("brandFilters").querySelectorAll("input").forEach(input => input.addEventListener("change", () => {input.checked ? selectedBrands.add(input.value) : selectedBrands.delete(input.value); renderProducts()}));
       renderProducts();
     }
     function filteredProducts() {
-      let items = PRODUCTS.filter(p => (selectedType === "All" || selectedType === "Best Sellers" ? selectedType === "All" || p.tag === "Best Seller" : p.type === selectedType) && p.price <= maxPrice && (!selectedColor || p.color === selectedColor) && (!selectedBrands.size || selectedBrands.has(p.brand)) && (`${p.name} ${p.brand} ${p.type}`.toLowerCase().includes(searchTerm)));
+      let items = PRODUCTS.filter(p => (selectedType === "All" || selectedType === "Best Sellers" ? selectedType === "All" || p.tag === "Best Seller" : p.type === selectedType) && (maxPrice>=2000 || p.price <= maxPrice) && (!selectedColor || p.color === selectedColor) && (!selectedBrands.size || selectedBrands.has(p.brand)) && (`${HabibaHTML(p.name)} ${HabibaHTML(p.brand)} ${p.type}`.toLowerCase().includes(searchTerm)));
       const sort = $("sortSelect").value;
       if (sort === "price-low") items.sort((a, b) => a.price - b.price); if (sort === "price-high") items.sort((a, b) => b.price - a.price); if (sort === "rating") items.sort((a, b) => b.rating - a.rating);
       return items;
     }
     function renderProducts() {
-      const items = filteredProducts(); $("resultCount").textContent = `Showing 1–${items.length} of ${PRODUCTS.length} products`;
-      $("productGrid").innerHTML = items.length ? items.map(p => `<article class="product-card"><a class="product-open" href="product.html?name=${encodeURIComponent(p.name)}&brand=${encodeURIComponent(p.brand)}&price=${p.price}&image=${encodeURIComponent(p.image)}&category=${encodeURIComponent(PAGE_CONFIG.title)}"><div class="product-image"><img loading="lazy" src="${p.image}" alt="${p.brand} ${p.name}">${p.tag ? `<span class="tag">${p.tag}</span>` : ""}<button class="wish" aria-label="Add ${p.name} to wishlist" onclick="this.classList.toggle('active');this.innerHTML=this.classList.contains('active')?'♥':'♡'">♡</button></div></a><div class="product-info"><div class="brand">${p.brand}</div><a class="product-name product-open-name" href="product.html?name=${encodeURIComponent(p.name)}&brand=${encodeURIComponent(p.brand)}&price=${p.price}&image=${encodeURIComponent(p.image)}&category=${encodeURIComponent(PAGE_CONFIG.title)}">${p.name}</a><div class="rating">★★★★★ <span>(${p.reviews})</span></div><div class="price-line"><span class="price">EGP ${p.price}</span><span class="old-price">EGP ${p.oldPrice}</span></div><button class="add-btn" onclick="addToCart('${p.name.replace(/'/g, "\\'")}')"><i class="fa-solid fa-bag-shopping"></i>&nbsp; Add to Cart</button></div></article>`).join("") : `<div class="no-results"><i class="fa-regular fa-face-frown"></i><h3>${PRODUCTS.length ? 'No products found' : 'No products yet'}</h3><p>${PRODUCTS.length ? 'Try changing the filters or search phrase.' : 'Your catalogue is empty. Add your products from your dashboard and they will appear here automatically.'}</p></div>`;
+      const items=filteredProducts(), E=HabibaHTML;
+      $("resultCount").textContent=items.length ? `Showing ${items.length} of ${PRODUCTS.length} products` : 'No products found';
+      $("productGrid").innerHTML=items.length ? items.map(p=>{
+        const link='product.html?'+new URLSearchParams({id:p.id,name:p.name,brand:p.brand,category:PAGE_CONFIG.title}).toString();
+        const available=p.stock==null || Number(p.stock)>0;
+        return `<article class="product-card"><a class="product-open" href="${E(link)}"><div class="product-image"><img loading="lazy" decoding="async" src="${E(p.image)}" alt="${E(p.name)}">${p.tag?`<span class="tag">${E(p.tag)}</span>`:''}</div></a><div class="product-info"><div class="brand">${E(p.brand)}</div><a class="product-name" href="${E(link)}">${E(p.name)}</a>${p.shade?`<p class="shade-label">${E(p.shade)}</p>`:''}<div class="price-line"><span class="price">EGP ${Number(p.price)}</span>${p.oldPrice>p.price?`<span class="old-price">EGP ${Number(p.oldPrice)}</span>`:''}</div><button class="add-btn" data-catalog-add="${E(p.id)}" ${available?'':'disabled'}><i class="fa-solid fa-bag-shopping" aria-hidden="true"></i> ${available?'Add to Bag':'Out of stock'}</button></div></article>`;
+      }).join('') : '<div class="no-results"><h3>No products found</h3><p>New beauty favourites are coming soon. Try another category or clear your filters.</p></div>';
     }
+    $("productGrid").addEventListener('click',e=>{const b=e.target.closest('[data-catalog-add]');if(b){const p=PRODUCTS.find(x=>String(x.id)===b.dataset.catalogAdd);if(p)addToCart(p.name);}});
     function addToCart(name) {
       const product = PRODUCTS.find(p => p.name === name);
-      if (product) {
+      if (product && (product.stock == null || Number(product.stock)>0)) {
         let saved = [];
         try { saved = JSON.parse(localStorage.getItem("habibaCart") || "[]"); } catch (e) { saved = []; }
         if (!Array.isArray(saved)) saved = [];
         const cartId = 5000 + Number(product.id);
-        const existing = saved.find(item => Number(item.id) === cartId);
+        const existing = saved.find(item => String(item.id) === cartId);
         if (existing) {
           existing.quantity = Math.max(1, Number(existing.quantity) || 1) + 1;
         } else {
@@ -2428,7 +2432,7 @@ h1,h2,h3,.serif,.hero-content h1,.section-heading h2,.hero h1{
 
 </style>
 <div id="habibaSharedCartOverlay"></div><aside id="habibaSharedCart" aria-label="Shopping cart" aria-hidden="true"><div class="hsc-head"><div><h2>Your Bag</h2><small id="hscCount">0 items</small></div><button class="hsc-close" id="hscClose" aria-label="Close cart">×</button></div><div class="hsc-items" id="hscItems"></div><div class="hsc-foot"><div class="hsc-total"><span>Subtotal</span><span id="hscTotal">EGP 0</span></div><a class="hsc-checkout" href="checkout.html">CHECK OUT</a><p class="hsc-muted" style="text-align:center;margin:12px 0 0">Shipping and discounts calculated at checkout.</p></div></aside>
-<script id="habibaSharedCartScript">(()=>{if(window.__habibaSharedCartInit)return;window.__habibaSharedCartInit=true;const $=id=>document.getElementById(id),panel=$('habibaSharedCart'),overlay=$('habibaSharedCartOverlay');if(!panel||!overlay)return;const money=n=>'EGP '+(Number(n)||0).toLocaleString('en-EG');const read=()=>{try{const x=JSON.parse(localStorage.getItem('habibaCart')||'[]');return Array.isArray(x)?x:[]}catch(e){return[]}};const write=x=>{try{localStorage.setItem('habibaCart',JSON.stringify(x))}catch(e){};updateBadge();render()};function updateBadge(){const c=read().reduce((n,x)=>n+(Number(x.quantity)||0),0);document.querySelectorAll('#cartCount,.cart-count').forEach(el=>el.textContent=c||'');$('hscCount').textContent=c+' item(s)'}function render(){const items=read();$('hscItems').innerHTML=items.length?items.map((p,i)=>`<article class="hsc-item"><img src="${p.image||''}" alt=""><div><h3>${p.name||'Beauty product'}</h3><div class="hsc-muted">${p.category||p.brand||'Beauty'}</div><strong>${money(p.price)}</strong><div class="hsc-controls"><button data-hsc="minus" data-i="${i}" aria-label="Decrease quantity">−</button><span>${Number(p.quantity)||1}</span><button data-hsc="plus" data-i="${i}" aria-label="Increase quantity">+</button><button class="hsc-remove" data-hsc="remove" data-i="${i}">Remove</button></div></div></article>`).join(''):'<div class="hsc-empty"><p>Your bag is empty.</p><p>Explore products and add your favourites.</p></div>';const total=items.reduce((n,p)=>n+(Number(p.price)||0)*(Number(p.quantity)||1),0);$('hscTotal').textContent=money(total);const link=$('habibaSharedCart').querySelector('.hsc-checkout');link.style.opacity=items.length?'1':'.55';link.setAttribute('aria-disabled',items.length?'false':'true');link.onclick=e=>{if(!read().length){e.preventDefault();}}}function open(){panel.classList.add('open');overlay.classList.add('open');panel.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';render()}function close(){panel.classList.remove('open');overlay.classList.remove('open');panel.setAttribute('aria-hidden','true');document.body.style.overflow=''}$('hscClose').addEventListener('click',close);overlay.addEventListener('click',close);document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});$('hscItems').addEventListener('click',e=>{const b=e.target.closest('[data-hsc]');if(!b)return;const items=read(),i=Number(b.dataset.i),p=items[i];if(!p)return;if(b.dataset.hsc==='remove')items.splice(i,1);else if(b.dataset.hsc==='plus')p.quantity=(Number(p.quantity)||1)+1;else p.quantity=(Number(p.quantity)||1)-1;if(p&&Number(p.quantity)<=0)items.splice(i,1);write(items)});document.addEventListener('click',e=>{const btn=e.target.closest('#cartButton,#cartBtn,[aria-label="Cart"],[aria-label="Open shopping cart"],button:has(#cartCount)');if(!btn)return; e.preventDefault();e.stopImmediatePropagation();open()},true);window.addEventListener('storage',e=>{if(e.key==='habibaCart'){updateBadge();render()}});window.habibaOpenCart=open;updateBadge();render()})();</script>
+<script id="habibaSharedCartScript">(()=>{if(window.__habibaSharedCartInit)return;window.__habibaSharedCartInit=true;const $=id=>document.getElementById(id),panel=$('habibaSharedCart'),overlay=$('habibaSharedCartOverlay');if(!panel||!overlay)return;const money=n=>'EGP '+(Number(n)||0).toLocaleString('en-EG');const read=()=>{try{const x=JSON.parse(localStorage.getItem('habibaCart')||'[]');return Array.isArray(x)?x:[]}catch(e){return[]}};const write=x=>{try{localStorage.setItem('habibaCart',JSON.stringify(x))}catch(e){};updateBadge();render()};function updateBadge(){const c=read().reduce((n,x)=>n+(Number(x.quantity)||0),0);document.querySelectorAll('#cartCount,.cart-count').forEach(el=>el.textContent=c||'');$('hscCount').textContent=c+' item(s)'}function render(){const items=read();$('hscItems').innerHTML=items.length?items.map((p,i)=>`<article class="hsc-item"><img src="${HabibaHTML(p.image||'')}" alt=""><div><h3>${HabibaHTML(p.name||'Beauty product')}</h3><div class="hsc-muted">${HabibaHTML(p.category||p.brand||'Beauty')}</div><strong>${money(p.price)}</strong><div class="hsc-controls"><button data-hsc="minus" data-i="${i}" aria-label="Decrease quantity">−</button><span>${Number(p.quantity)||1}</span><button data-hsc="plus" data-i="${i}" aria-label="Increase quantity">+</button><button class="hsc-remove" data-hsc="remove" data-i="${i}">Remove</button></div></div></article>`).join(''):'<div class="hsc-empty"><p>Your bag is empty.</p><p>Explore products and add your favourites.</p></div>';const total=items.reduce((n,p)=>n+(Number(p.price)||0)*(Number(p.quantity)||1),0);$('hscTotal').textContent=money(total);const link=$('habibaSharedCart').querySelector('.hsc-checkout');link.style.opacity=items.length?'1':'.55';link.setAttribute('aria-disabled',items.length?'false':'true');link.onclick=e=>{if(!read().length){e.preventDefault();}}}function open(){panel.classList.add('open');overlay.classList.add('open');panel.setAttribute('aria-hidden','false');document.body.style.overflow='hidden';render()}function close(){panel.classList.remove('open');overlay.classList.remove('open');panel.setAttribute('aria-hidden','true');document.body.style.overflow=''}$('hscClose').addEventListener('click',close);overlay.addEventListener('click',close);document.addEventListener('keydown',e=>{if(e.key==='Escape')close()});$('hscItems').addEventListener('click',e=>{const b=e.target.closest('[data-hsc]');if(!b)return;const items=read(),i=Number(b.dataset.i),p=items[i];if(!p)return;if(b.dataset.hsc==='remove')items.splice(i,1);else if(b.dataset.hsc==='plus')p.quantity=(Number(p.quantity)||1)+1;else p.quantity=(Number(p.quantity)||1)-1;if(p&&Number(p.quantity)<=0)items.splice(i,1);write(items)});document.addEventListener('click',e=>{const btn=e.target.closest('#cartButton,#cartBtn,[aria-label="Cart"],[aria-label="Open shopping cart"],button:has(#cartCount)');if(!btn)return; e.preventDefault();e.stopImmediatePropagation();open()},true);window.addEventListener('storage',e=>{if(e.key==='habibaCart'){updateBadge();render()}});window.habibaOpenCart=open;updateBadge();render()})();</script>
 <script id="habibaStoreConfigLoader">window.HabibaStore&&HabibaStore.ready.catch(()=>{});</script>
 
 <div class="mobile-buybar" aria-label="Quick cart">
@@ -2459,6 +2463,7 @@ h1,h2,h3,.serif,.hero-content h1,.section-heading h2,.hero h1{
 }catch(e){}})();
 </script>
 
+<link rel="stylesheet" href="habiba-v6.css">
 </body>
 
 </html>

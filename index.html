@@ -2,6 +2,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+<script src="backend-config.js"></script>
+<script src="backend.js"></script>
 <script src="store.js"></script>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0">
@@ -13,7 +15,7 @@
 
 <!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
 
 <!-- Font Awesome: icons for cart, WhatsApp, menu, search, etc. -->
 <link rel="stylesheet"
@@ -54,7 +56,7 @@ body {
   font-family: var(--sans);
   color: var(--text);
   background:
-  url("dog.jpeg")center center / cover fixed no-repeat var(--bg);
+  url("dog.jpeg")center center / cover scroll no-repeat var(--bg);
   overflow-x: hidden;
 }
 
@@ -299,7 +301,7 @@ input:focus-visible {
 
 .sidebar-top {
   padding: 24px 22px 20px;
-  background: url("WhatsApp\ Image\ 2026-10-20\ at\ 8.27.47\ PM.jpeg")center center / cover fixed no-repeat  ;
+  background: url("WhatsApp\ Image\ 2026-10-20\ at\ 8.27.47\ PM.jpeg")center center / cover scroll no-repeat  ;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1985,7 +1987,7 @@ h1,h2,h3,.serif,.hero-content h1,.section-heading h2,.hero h1{
 <link rel="stylesheet" href="habiba-v5.css">
 </head>
 
-<body>
+<body class="habiba-photo-bg">
 
 <!-- =====================================
      ANNOUNCEMENT BAR
@@ -2505,7 +2507,7 @@ h1,h2,h3,.serif,.hero-content h1,.section-heading h2,.hero h1{
     © <span id="currentYear"></span> Habiba Skin Care. All rights reserved.
   </div>
 
-</footer>
+<a class="admin-entry" href="dashboard.html">Store management</a></footer>
 
 <!-- =====================================
      CART SIDEBAR
@@ -2662,11 +2664,11 @@ try {
 
   if (Array.isArray(savedCart)) {
     cart = savedCart
-      .filter(item => Number.isInteger(Number(item.id)) &&
+      .filter(item => item.id != null &&
         Number.isInteger(Number(item.quantity)) && Number(item.quantity) > 0)
       .map(item => ({
         ...item,
-        id: Number(item.id),
+        id: String(item.id),
         quantity: Number(item.quantity)
       }));
   }
@@ -2714,13 +2716,16 @@ cartOverlay.addEventListener("click", closeCart);
 ========================================= */
 
 function addToCart(productId) {
-  const id = Number(productId);
-  const existing = cart.find(item => item.id === id);
+  const id = String(productId);
+  const current=products.find(p=>String(p.id)===id);
+  if(!current || (current.stock!=null && Number(current.stock)<=0)){showToast("Out of stock");return;}
+  const existing = cart.find(item => String(item.id) === id);
 
   if (existing) {
     existing.quantity += 1;
   } else {
     cart.push({
+      ...products.find(p=>String(p.id)===id),
       id: id,
       quantity: 1
     });
@@ -2742,14 +2747,14 @@ function addToCart(productId) {
 ========================================= */
 
 function changeQuantity(productId, change) {
-  const item = cart.find(item => item.id === Number(productId));
+  const item = cart.find(item => String(item.id) === String(productId));
 
   if (!item) return;
 
   item.quantity += change;
 
   if (item.quantity <= 0) {
-    cart = cart.filter(item => item.id !== Number(productId));
+    cart = cart.filter(item => String(item.id) !== String(productId));
   }
 
   saveCart();
@@ -2758,7 +2763,7 @@ function changeQuantity(productId, change) {
 }
 
 function removeFromCart(productId) {
-  cart = cart.filter(item => item.id !== Number(productId));
+  cart = cart.filter(item => String(item.id) !== String(productId));
 
   saveCart();
   updateCartBadge();
@@ -2817,12 +2822,12 @@ function renderCart() {
     return `
       <div class="cart-item">
         <img
-          src="${product.image}"
-          alt="${product.name}"
+          src="${HabibaHTML(product.image)}"
+          alt="${HabibaHTML(product.name)}"
           loading="lazy">
 
         <div>
-          <h4>${product.name}</h4>
+          <h4>${HabibaHTML(product.name)}</h4>
 
           <div class="cart-item-price">
             ${formatPrice(Number(product.price) || 0)}
@@ -2832,22 +2837,22 @@ function renderCart() {
             <button
               class="quantity-btn"
               data-action="decrease"
-              data-id="${product.id}"
-              aria-label="Decrease ${product.name} quantity">−</button>
+              data-id="${HabibaHTML(product.id)}"
+              aria-label="Decrease ${HabibaHTML(product.name)} quantity">−</button>
 
             <span class="quantity-number">${item.quantity}</span>
 
             <button
               class="quantity-btn"
               data-action="increase"
-              data-id="${product.id}"
-              aria-label="Increase ${product.name} quantity">+</button>
+              data-id="${HabibaHTML(product.id)}"
+              aria-label="Increase ${HabibaHTML(product.name)} quantity">+</button>
 
             <button
               class="remove-item"
               data-action="remove"
-              data-id="${product.id}"
-              aria-label="Remove ${product.name}">
+              data-id="${HabibaHTML(product.id)}"
+              aria-label="Remove ${HabibaHTML(product.name)}">
               <i class="fa-regular fa-trash-can"></i>
             </button>
           </div>
@@ -2865,7 +2870,7 @@ cartItems.addEventListener("click", event => {
 
   if (!button) return;
 
-  const id = Number(button.dataset.id);
+  const id = String(button.dataset.id);
   const action = button.dataset.action;
 
   if (action === "increase") changeQuantity(id, 1);
@@ -2883,6 +2888,8 @@ let sortMode = "featured";
 const wishlist = new Set();
 
 function renderProducts() {
+  products.splice(0,products.length,...(window.HabibaStore?HabibaStore.getProducts():[]).map(p=>({...p,id:String(p.id),price:Number(p.salePrice!=='' && p.salePrice!=null?p.salePrice:p.price)||0,rating:Number(p.rating)||0,reviews:Number(p.reviews)||0})));
+
   let visibleProducts = products.filter(product => {
     // Bikini Area is a product type inside the visible Bikini Area category.
     const matchesCategory =
@@ -2928,32 +2935,30 @@ function renderProducts() {
     <article class="product-card">
 
       ${product.badge
-        ? `<span class="product-badge">${product.badge}</span>`
+        ? `<span class="product-badge">${HabibaHTML(product.badge)}</span>`
         : ""}
 
-      <a class="product-open" href="product.html?name=${encodeURIComponent(product.name)}&brand=${encodeURIComponent(product.category)}&price=${product.price}&image=${encodeURIComponent(product.image)}&category=${encodeURIComponent(product.category)}"><div class="product-image">
+      <a class="product-open" href="product.html?id=${encodeURIComponent(product.id)}&name=${encodeURIComponent(product.name)}&brand=${encodeURIComponent(product.category)}&price=${product.price}&image=${encodeURIComponent(product.image)}&category=${encodeURIComponent(product.category)}"><div class="product-image">
         <img
-          src="${product.image}"
-          alt="${product.name}"
+          src="${HabibaHTML(product.image)}"
+          alt="${HabibaHTML(product.name)}"
           loading="lazy">
 
         <button
           class="wishlist-btn ${wishlist.has(product.id) ? "liked" : ""}"
-          data-wishlist="${product.id}"
-          aria-label="Add ${product.name} to wishlist">
+          data-wishlist="${HabibaHTML(product.id)}"
+          aria-label="Add ${HabibaHTML(product.name)} to wishlist">
 
           <i class="${wishlist.has(product.id)
             ? "fa-solid"
             : "fa-regular"} fa-heart"></i>
         </button>
-      </div>
-
       </div></a>
       <div class="product-details">
-        <p class="product-category">${product.category}</p>
-        <h3 class="product-name"><a class="product-open-name" href="product.html?name=${encodeURIComponent(product.name)}&brand=${encodeURIComponent(product.category)}&price=${product.price}&image=${encodeURIComponent(product.image)}&category=${encodeURIComponent(product.category)}">${product.name}</a></h3>
+        <p class="product-category">${HabibaHTML(product.category)}</p>
+        <h3 class="product-name"><a class="product-open-name" href="product.html?id=${encodeURIComponent(product.id)}&name=${encodeURIComponent(product.name)}&brand=${encodeURIComponent(product.category)}&price=${product.price}&image=${encodeURIComponent(product.image)}&category=${encodeURIComponent(product.category)}">${HabibaHTML(product.name)}</a></h3>
 
-        <div class="product-rating">
+        <div class="product-rating" ${product.reviews ? '' : 'hidden'}>
           <i class="fa-solid fa-star"></i>
           ${product.rating}
           <span>(${product.reviews} reviews)</span>
@@ -2964,8 +2969,8 @@ function renderProducts() {
 
           <button
             class="add-cart"
-            data-add="${product.id}"
-            aria-label="Add ${product.name} to cart">
+            data-add="${HabibaHTML(product.id)}"
+            aria-label="Add ${HabibaHTML(product.name)} to cart">
 
             <i class="fa-solid fa-plus"></i>
           </button>
@@ -2986,7 +2991,7 @@ productGrid.addEventListener("click", event => {
   }
 
   if (wishlistButton) {
-    const id = Number(wishlistButton.dataset.wishlist);
+    const id = String(wishlistButton.dataset.wishlist);
 
     if (wishlist.has(id)) {
       wishlist.delete(id);
@@ -3247,6 +3252,8 @@ renderProducts();
 updateCartBadge();
 renderCart();
 startHeroTimer();
+window.addEventListener('habiba:store-updated',()=>{renderProducts();renderCart();});
+if(window.HabibaStore)HabibaStore.ready.then(()=>{renderProducts();renderCart();});
 </script>
 
 <script id="habibaStoreConfigLoader">window.HabibaStore&&HabibaStore.ready.catch(()=>{});</script>
@@ -3279,5 +3286,6 @@ startHeroTimer();
 }catch(e){}})();
 </script>
 
+<link rel="stylesheet" href="habiba-v6.css">
 </body>
 </html>
