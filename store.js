@@ -103,14 +103,20 @@
     return state;
   }
 
+  var pendingLoad=null;
   function load() {
+    if(pendingLoad)return pendingLoad;
+    pendingLoad=loadOnce().finally(function(){pendingLoad=null;});return pendingLoad;
+  }
+  function loadOnce() {
     return (window.HabibaBackend && HabibaBackend.configured ? HabibaBackend.read().then(function(row){ return row.document; }) : readConfigFile()).then(function (fileCfg) {
       state = merge(fileCfg);
       return publish();
     }).catch(function () {
       // Preserve the last successful catalogue during a temporary connection failure.
-      state.source = 'connection-error';
-      return publish();
+      if(state.source !== 'defaults'){return publish();}
+      document.documentElement.setAttribute('data-store-error','1');
+      return state;
     });
   }
 
@@ -143,6 +149,7 @@
 
   /* ---------- page DOM updates ---------- */
   function applyToPage() {
+    if(state.source === 'defaults') return;
     if (!document || !document.querySelectorAll) return;
     var s = getSettings();
     var threshold = Math.max(0, Number(s.shippingThreshold) || 0);

@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="en"><head>
 <script src="backend-config.js"></script>
-<script src="backend.js"></script>
-<script src="store.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><title>Your Beauty Bag | Habiba Cosmetics</title><meta name="description" content="Review your makeup and beauty essentials in your Habiba Cosmetics bag."><link rel="preconnect" href="https://fonts.googleapis.com">
+<script src="backend.js?v=14"></script><script src="customer.js"></script>
+<script src="store.js?v=14"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Your Beauty Bag | Habiba Cosmetics</title><meta name="description" content="Review your makeup and beauty essentials in your Habiba Cosmetics bag."><link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 
@@ -1914,6 +1914,12 @@ h1,h2,h3,.serif,.hero-content h1,.section-heading h2,.hero h1{
 </style>
 <link rel="stylesheet" href="habiba-v6.css?v=13">
 <link rel="stylesheet" href="hero-motion.css?v=13">
+<style>
+html:not([data-store-ready]) .announcement,html:not([data-store-ready]) .bundles-ticker{visibility:hidden!important}
+html:not([data-store-ready]) #productGrid,html:not([data-store-ready]) #bundleCards,html:not([data-store-ready]) #habiba-real-life .real-life-row{visibility:hidden!important;min-height:180px}
+html[data-store-error] .announcement,html[data-store-error] .bundles-ticker{visibility:hidden!important}
+html[data-store-error] #productGrid,html[data-store-error] #bundleCards{visibility:visible!important}
+</style><link rel="preconnect" href="https://kgnomnqwhszvjamcltia.supabase.co" crossorigin>
 </head><body class="habiba-photo-bg">
 <div class="announcement" data-shipping-announcement>FREE SHIPPING ON ORDERS OVER EGP 1,000</div>
 
@@ -2115,4 +2121,4 @@ document.getElementById('currentYear').textContent=new Date().getFullYear();rend
 </script>
 
 
-<script src="hero-motion.js?v=9"></script></body></html>
+<script src="hero-motion.js?v=9"></script><script src="welcome-banner.js"></script></body></html>

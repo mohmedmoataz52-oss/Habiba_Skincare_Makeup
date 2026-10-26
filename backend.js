@@ -54,8 +54,17 @@
     if (old) try { await request('/auth/v1/logout', {method:'POST'}, old.access_token); } catch (_) {}
   }
   async function read() {
-    const rows = await request('/rest/v1/habiba_store?select=document,revision,updated_at&id=eq.1', {cache:'no-store'});
-    if (!rows || rows.length !== 1) throw Error('جدول المتجر غير جاهز؛ شغّل backend-setup.sql.');
+    const cacheKey='habiba-public-catalogue:'+url;
+    let cached=null;try{cached=JSON.parse(sessionStorage.getItem(cacheKey)||'null');}catch(_){}
+    if(cached && cached.document && Number.isInteger(cached.revision)){
+      try{
+        const versions=await request('/rest/v1/habiba_store?select=revision&id=eq.1',{cache:'no-store'});
+        if(versions && versions.length===1 && versions[0].revision===cached.revision)return cached;
+      }catch(e){throw e;}
+    }
+    const rows=await request('/rest/v1/habiba_store?select=document,revision,updated_at&id=eq.1',{cache:'no-store'});
+    if(!rows||rows.length!==1)throw Error('جدول المتجر غير جاهز');
+    try{sessionStorage.setItem(cacheKey,JSON.stringify(rows[0]));}catch(_){}
     return rows[0];
   }
   async function save(document, revision) {
@@ -74,5 +83,5 @@
     if(!res.ok)throw Error('تعذر رفع الفيديو؛ شغّل reels-storage.sql وراجع صلاحيات الإدارة.');
     return url+'/storage/v1/object/public/habiba-reels/'+path;
   }
-  window.HabibaBackend = {configured,read,save,signIn,signOut,isAdmin,uploadVideo};
+  window.HabibaBackend = {configured,read,save,signIn,signOut,isAdmin,uploadVideo,adminRequest:async(path,options={})=>request(path,options,await access())};
 })();

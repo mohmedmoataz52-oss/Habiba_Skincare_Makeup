@@ -1,8 +1,8 @@
 <!doctype html>
 <html lang="en"><head>
 <script src="backend-config.js"></script>
-<script src="backend.js"></script>
-<script src="store.js"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate"><meta http-equiv="Pragma" content="no-cache"><meta http-equiv="Expires" content="0"><title>Checkout | Habiba Skin Care</title><meta name="description" content="Review your makeup and beauty essentials in your Habiba Cosmetics bag."><link rel="preconnect" href="https://fonts.googleapis.com">
+<script src="backend.js?v=14"></script><script src="customer.js"></script>
+<script src="store.js?v=14"></script><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Checkout | Habiba Skin Care</title><meta name="description" content="Review your makeup and beauty essentials in your Habiba Cosmetics bag."><link rel="preconnect" href="https://fonts.googleapis.com">
 
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
@@ -1921,6 +1921,12 @@ h1,h2,h3,.serif,.hero-content h1,.section-heading h2,.hero h1{
 </style>
 <link rel="stylesheet" href="habiba-v6.css?v=13">
 <link rel="stylesheet" href="hero-motion.css?v=13">
+<style>
+html:not([data-store-ready]) .announcement,html:not([data-store-ready]) .bundles-ticker{visibility:hidden!important}
+html:not([data-store-ready]) #productGrid,html:not([data-store-ready]) #bundleCards,html:not([data-store-ready]) #habiba-real-life .real-life-row{visibility:hidden!important;min-height:180px}
+html[data-store-error] .announcement,html[data-store-error] .bundles-ticker{visibility:hidden!important}
+html[data-store-error] #productGrid,html[data-store-error] #bundleCards{visibility:visible!important}
+</style><link rel="preconnect" href="https://kgnomnqwhszvjamcltia.supabase.co" crossorigin>
 </head>
 <div class="announcement" data-shipping-announcement>FREE SHIPPING ON ORDERS OVER EGP 1,000</div>
 
@@ -2092,9 +2098,9 @@ function renderCheckout(){
   </section>
   <section class="checkout-section">
    <h2>Payment</h2><p class="section-desc">Choose how you would like to pay. Online payment requires the store's payment provider to be connected.</p>
-   <div class="secure-label"><i class="fa-solid fa-lock"></i> All transactions are secure and encrypted.</div><p class="form-note" style="margin-top:-8px;margin-bottom:14px">Online card payments can only be processed after a verified payment gateway is connected. Never enter card details on this website until then.</p>
+   <div class="secure-label"><i class="fa-solid fa-lock"></i> Your order is sent over an encrypted connection.</div><p class="form-note" style="margin-top:-8px;margin-bottom:14px">Online card payments can only be processed after a verified payment gateway is connected. Never enter card details on this website until then.</p>
    <div class="payment-methods">
-    <label class="payment-choice selected"><input type="radio" name="payment" value="Online card/wallet/installments" > <span><strong>Pay via Debit/Credit cards, Wallets or Installments</strong><div class="payment-logos"><span>VISA</span><span>mastercard</span><span>meeza</span><span>valu</span><span>sympl</span><span>tabby</span><span>POSTPAY</span><span>AMEX</span><span>tamara</span><span>+8</span></div><br><span style="color:#987577;font-size:10px">You can continue to order; the online payment gateway must be configured to accept payment.</span></span></label>
+    <label class="payment-choice selected"><input type="radio" name="payment" value="Online card/wallet/installments" > <span><strong>Pay via Debit/Credit cards, Wallets or Installments</strong><div class="payment-logos"><span>VISA</span><span>mastercard</span><span>meeza</span><span>valu</span><span>sympl</span><span>tabby</span><span>POSTPAY</span><span>AMEX</span><span>tamara</span><span>+8</span></div><br><span style="color:#987577;font-size:10px">Coming soon — currently unavailable.</span></span></label>
     <label class="payment-choice"><input type="radio" name="payment" value="Cash on Delivery (COD)" checked> <span><strong>Cash on Delivery (COD)</strong><br><span style="color:#987577;font-size:10px">Pay when your order arrives.</span></span></label>
    </div>
   </section>
@@ -2141,76 +2147,7 @@ function renderCheckout(){
  const savedInfo=(()=>{try{return JSON.parse(localStorage.getItem('habibaCheckoutInfo')||'null')}catch(e){return null}})();
  if(savedInfo){['customerEmail','firstName','lastName','address','apartment','city','postalCode','customerPhone','backupPhone'].forEach(id=>{const el=document.getElementById(id);if(el&&savedInfo[id])el.value=savedInfo[id]});city.dispatchEvent(new Event('change'));}
 }
-function submitOrder(e){
- e.preventDefault();
- if(!cart.length)return;
- const form=e.currentTarget;
- if(!form.reportValidity())return;
- const data=new FormData(form);
- const subtotal=cart.reduce((sum,item)=>{const p=getCartProduct(item);return sum+(Number(p.price)||0)*(Number(item.quantity)||1)},0);
- const shippingRates={'Cairo':80,'Giza':80,'Alexandria':95,'Ismailia':95,'Kafr El Sheikh':95,'Damietta':95,'Benha':95,'Beheira':95,'Sharqia':95,'Gharbia':95,'Tanta':95,'Mansoura':95,'Suez':95,'Port Said':95,'Qalyubia':95,'Menoufia':95,'Dakahlia':95,'Zagazig':95,'10th of Ramadan':95,'Qena':110,'Sohag':110,'Aswan':110,'Marsa Matrouh':110,'Minya':110,'North Coast':110,'Luxor':110,'Fayoum':110,'Assiut':110,'Beni Suef':110,'South Sinai':140,'Red Sea':140,'Sharm El Sheikh':140,'Hurghada':140};
- const area=data.get('city'), shipping=shippingRates[area];
- if(!Number.isFinite(shipping)){alert('Please choose your city / governorate to calculate shipping.');return;}
- const _pr=window.HabibaStore?HabibaStore.promo(subtotal):{disc:0,free:false,pct:0};
- const shippingDue=_pr.free?0:shipping;
- const discount=_pr.disc;
- const totalDue=subtotal-discount+shippingDue;
- if(data.get('saveInfo')==='Yes'){
-  const saved={};
-  ['customerEmail','firstName','lastName','address','apartment','city','postalCode','customerPhone','backupPhone'].forEach(id=>saved[id]=form.elements[id]?.value||'');
-  try{localStorage.setItem('habibaCheckoutInfo',JSON.stringify(saved))}catch(err){}
- }
- const order={
-  contact:{email:data.get('customerEmail'),whatsappNews:data.get('whatsappNews')==='Yes'},
-  delivery:{country:'Egypt',firstName:data.get('firstName'),lastName:data.get('lastName'),address:data.get('address'),apartment:data.get('apartment')||'',city:area,postalCode:data.get('postalCode')||'',phone:data.get('customerPhone'),backupPhone:data.get('backupPhone')||'',shippingMethod:area+' delivery'},
-  payment:{method:data.get('payment'),billingChoice:data.get('billingChoice'),billingAddress:data.get('billingChoice')==='Use a different billing address'?{firstName:data.get('billingFirstName'),lastName:data.get('billingLastName'),address:data.get('billingAddress'),city:data.get('billingCity'),postalCode:data.get('billingPostalCode')||''}:null},
-  notes:data.get('orderNotes')||'',
-  discount:discount,discountPct:_pr.pct,items:cart.map(item=>{const p=getCartProduct(item);return {id:item.id??null,name:p.name||'Beauty product',image:p.image||'',price:Number(p.price)||0,quantity:Number(item.quantity)||1,lineTotal:(Number(p.price)||0)*(Number(item.quantity)||1)}}),
-  subtotal,shipping:shippingDue,total:totalDue,currency:'EGP'
- };
- // Keep this as a front-end-only flow for now: send the complete order to the shop WhatsApp.
- // The shop can confirm the order and tell the customer how to pay the deposit.
- window.habibaCheckoutOrder=order;
- window.dispatchEvent(new CustomEvent('habiba:checkout-submit',{detail:order}));
- const moneyEGP=n=>'EGP '+Number(n||0).toLocaleString('en-EG');
- const itemLines=order.items.map((item,i)=>`${i+1}. ${HabibaHTML(item.name)} x${item.quantity} — ${moneyEGP(item.lineTotal)}`).join('\n');
- const billing=order.payment.billingChoice==='Use a different billing address' && order.payment.billingAddress
-  ? `\nBilling address: ${order.payment.billingAddress.firstName||''} ${order.payment.billingAddress.lastName||''}, ${order.payment.billingAddress.address||''}, ${order.payment.billingAddress.city||''}`
-  : '\nBilling address: same as shipping';
- const message=[
-  '🌸 *NEW HABIBA SKIN CARE ORDER — DEPOSIT CONFIRMATION*',
-  '',
-  `Customer: ${order.delivery.firstName} ${order.delivery.lastName}`,
-  `Email: ${order.contact.email}`,
-  `Phone: ${order.delivery.phone}`,
-  `Backup phone: ${order.delivery.backupPhone||'Not provided'}`,
-  `Shipping address: ${order.delivery.address}${order.delivery.apartment?', '+order.delivery.apartment:''}, ${order.delivery.city}${order.delivery.postalCode?' '+order.delivery.postalCode:''}, Egypt`,
-  billing,
-  '',
-  '*Order items:*', itemLines || 'No items listed',
-  '',
-  `Subtotal: ${moneyEGP(order.subtotal)}`,
-  ...(order.discount>0?[`Discount ${order.discountPct}%: -${moneyEGP(order.discount)}`]:[]),
-  `Shipping: ${order.shipping===0?'FREE ✓':moneyEGP(order.shipping)}`,
-  `*Total: ${moneyEGP(order.total)}*`,
-  `Customer payment preference: ${order.payment.method||'Not selected'}`,
-  `Order notes: ${order.notes||'None'}`,
-  '',
-  'Please confirm product availability and the deposit amount/payment details with the customer before fulfilling this order.'
- ].join('\n');
- const waUrl='https://wa.me/'+WHATSAPP_NUMBER+'?text='+encodeURIComponent(message);
- const oldNotice=document.getElementById('checkoutFrontendNotice');
- if(oldNotice)oldNotice.remove();
- const notice=document.createElement('div');
- notice.id='checkoutFrontendNotice';notice.setAttribute('role','status');
- notice.style.cssText='margin-top:16px;padding:14px 16px;border:1px solid #d8b7b8;border-radius:8px;background:#fff8f7;color:#70464d;font-size:12px;line-height:1.8';
- notice.innerHTML='<strong>Order details are ready.</strong><br>WhatsApp will open with the customer details and order summary so you can confirm availability and send the deposit instructions.';
- form.querySelector('.checkout-submit').insertAdjacentElement('afterend',notice);
- const waWindow=window.open(waUrl,'_blank','noopener,noreferrer');
- if(!waWindow){const link=document.createElement('a');link.href=waUrl;link.target='_blank';link.rel='noopener noreferrer';link.textContent='Open WhatsApp to send order';link.style.cssText='display:inline-block;margin-top:10px;padding:10px 14px;background:#51333e;color:white;border-radius:4px';notice.appendChild(document.createElement('br'));notice.appendChild(link);}
- try{ if(notice && typeof notice.scrollIntoView==='function'){ notice.scrollIntoView({behavior:'smooth',block:'nearest'}); } }catch(e){ /* old browsers: skip smooth scroll */ }
- try{ if(!waWindow || (waWindow && waWindow.closed)){ const el=document.getElementById('checkoutFrontendNotice'); if(el && !el.querySelector('a')){ const a=document.createElement('a'); a.href=waUrl; a.target='_blank'; a.rel='noopener noreferrer'; a.textContent='Open WhatsApp to send order'; a.style.cssText='display:inline-block;margin-top:10px;padding:10px 14px;background:#51333e;color:white;border-radius:4px'; el.appendChild(document.createElement('br')); el.appendChild(a);} } }catch(e){}
-}
+function submitOrder(e){e.preventDefault();alert('تعذر تحميل نظام الطلبات. أعد تحميل الصفحة؛ لم يتم تسجيل أي طلب.');}
 document.getElementById('currentYear').textContent=new Date().getFullYear();renderCheckout();
 </script>
 <div id="habibaSharedCartOverlay"></div><aside id="habibaSharedCart" aria-label="Shopping cart" aria-hidden="true"><div class="hsc-head"><div><h2>Your Bag</h2><small id="hscCount">0 items</small></div><button class="hsc-close" id="hscClose" aria-label="Close cart">×</button></div><div class="hsc-items" id="hscItems"></div><div class="hsc-foot"><div class="hsc-total"><span>Subtotal</span><span id="hscTotal">EGP 0</span></div><a class="hsc-checkout" href="checkout.html">CHECK OUT</a><p class="hsc-muted" style="text-align:center;margin:12px 0 0">Shipping and discounts calculated at checkout.</p></div></aside>
@@ -2246,4 +2183,4 @@ document.getElementById('currentYear').textContent=new Date().getFullYear();rend
 </script>
 
 
-<script src="hero-motion.js?v=9"></script></body></html>
+<script src="hero-motion.js?v=9"></script><script src="customer-checkout.js"></script></body></html>
