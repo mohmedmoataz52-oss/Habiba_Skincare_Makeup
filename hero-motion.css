@@ -62,3 +62,24 @@ html.motion-ready .hero>.hero-content .primary-btn{display:none}
 .beauty-scene .vessel{border-right:2px solid #aa718e55;border-bottom:5px solid #aa718e44}
 @media(min-width:1000px){html.motion-ready body .hero{height:380px!important;max-height:380px!important}.beauty-scene .vessel{left:71%;top:21%;scale:.9}.scene-disc{left:60%;width:32%;bottom:9%}.beauty-scene .orb{left:60%;top:70%}.hero-shop{margin-top:8px}}
 @media(max-width:650px){html.motion-ready body .hero>.hero-content,html.motion-ready body .hero .hero-copy{width:63%;max-width:63%!important;left:6%!important;bottom:50%!important}.vessel-logo{height:52px!important}.hero-shop{margin-top:12px}}
+/* v11: a single, contained brand mark; no duplicate text beneath the logo. */
+.beauty-scene .vessel{overflow:visible}
+html body .beauty-scene .vessel .vessel-logo{top:29%!important;left:14%!important;width:72%!important;height:45%!important;object-fit:contain!important;object-position:center!important;margin:0!important;transform:none!important;mix-blend-mode:multiply}
+.vessel-label{display:none!important}.beauty-scene .vessel::after{display:none!important}.beauty-scene .bottle-line{display:none!important}
+html body .beauty-scene[data-kind=haircare] .vessel{background:linear-gradient(95deg,#c58fa8,#fff0f6 22%,#f4cfde 46%,#fff1f7 68%,#b87898)!important}
+html body .beauty-scene[data-kind=haircare] .vessel::before{background:linear-gradient(90deg,#b67d95,#ffe8ee,#b37a92)!important}
+html body .bundles-hero{display:grid!important;grid-template-columns:42% 1fr!important;gap:0!important;padding:0!important;margin:0!important;border-radius:0!important;height:300px!important;min-height:0!important;max-height:none!important;align-items:stretch!important;background:#f8dfe7!important}
+html body .bundles-hero>.hero-photo{width:100%!important;height:100%!important;min-height:0!important;object-fit:cover!important;object-position:center!important;mask-image:none!important;-webkit-mask-image:none!important;margin:0!important;border-radius:0!important}
+html body .bundles-hero>.hero-copy{position:static!important;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px!important;background:linear-gradient(100deg,#f8dfe7,#fff3f7)!important;margin:0!important;transform:none!important;translate:none!important}
+html body .bundles-hero>.hero-mark{display:none!important}
+html body .bundles-hero+.bundles-ticker{margin:0!important;border-radius:0!important;padding:9px 0!important;background:#b99589!important;color:#fffaf5!important;font:500 11px var(--sans)!important;letter-spacing:1.5px!important}
+@media(max-width:650px){
+ html body .beauty-scene[data-kind=Perfume] .vessel{left:auto!important;right:12px!important;top:29%!important;width:135px!important;height:145px!important;scale:.58!important;transform-origin:right top!important}
+ html body .beauty-scene[data-kind=Perfume] .orb{left:auto!important;right:8px!important;top:30%!important;scale:.5!important;transform-origin:right top!important}
+ html body .beauty-scene[data-kind=haircare] .vessel{top:23%!important;scale:.49!important}
+ html body .bundles-hero{height:260px!important;grid-template-columns:43% 57%!important}
+ html body .bundles-hero>.hero-copy{padding:12px 8px!important}
+ html body .bundles-hero .hero-copy h1{font-size:29px!important;line-height:1.1!important}
+ html body .bundles-hero .hero-copy p{font-size:12px!important;line-height:1.5!important}
+ html body .bundles-hero .eyebrow{font-size:8px!important;letter-spacing:1px!important}
+}
