@@ -16,13 +16,15 @@
   if(category){a.href='#bestsellers';a.addEventListener('click',e=>{e.preventDefault();selectedType='Best Sellers';renderProducts();document.querySelectorAll('.quick-cat').forEach(x=>x.classList.toggle('active',x.dataset.type==='Best Sellers'));document.getElementById('productGrid').scrollIntoView({behavior:'smooth',block:'start'});});}
  });
 
- if(kind==='index'){
- const section=document.createElement('section');section.className='real-life';section.innerHTML='<h2>Habiba in real life</h2><p>Little moments. Everyday beauty.</p><div class="real-life-row"></div>';
- const footer=document.querySelector('footer');if(footer)footer.before(section);
+ if(document.getElementById('habiba-real-life')){
+ const section=document.getElementById('habiba-real-life');
+ function startVideos(){section.querySelectorAll('video').forEach(v=>{v.muted=true;v.defaultMuted=true;v.playsInline=true;v.play().catch(()=>{});});}
+ startVideos();window.addEventListener('pageshow',startVideos);
  let signature='';
  function render(){
   const settings=window.HabibaStore?HabibaStore.getSettings():{};
-  const clips=Array.isArray(settings.realLife)?settings.realLife:window.HabibaMoments;
+  if(!Array.isArray(settings.realLife))return;
+  const clips=settings.realLife;
   const sig=JSON.stringify(clips);if(sig===signature)return;signature=sig;
   section.querySelectorAll('video').forEach(v=>v.pause());const row=section.querySelector('.real-life-row');row.textContent='';
   clips.forEach((clip,i)=>{
@@ -40,6 +42,5 @@
  }
  render();if(window.HabibaStore)HabibaStore.ready.then(render);window.addEventListener('habiba:store-updated',render);
  document.addEventListener('visibilitychange',()=>section.querySelectorAll('video').forEach(v=>{if(document.hidden)v.pause();else v.play().catch(()=>{});}));
- const packaging=document.createElement('section');packaging.className='brand-story';packaging.innerHTML='<div class="brand-story-heading"><span>THE HABIBA EXPERIENCE</span><h2>Beauty, beautifully wrapped.</h2><p>A little care in every detail.</p></div><div class="brand-gallery">'+[1,2,3].map((n)=>'<figure><img loading="lazy" decoding="async" src="media/brand-'+n+'.webp" alt="Habiba Skin Care and Makeup packaging"><figcaption>'+['A box of beauty','Made to be gifted','The finishing touches'][n-1]+'</figcaption></figure>').join('')+'</div>';section.after(packaging);
  }
 })();

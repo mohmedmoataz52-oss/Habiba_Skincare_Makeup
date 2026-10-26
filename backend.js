@@ -65,7 +65,7 @@
   }
   // Legacy GitHub tokens are no longer used or kept by this dashboard.
   try { localStorage.removeItem('habiba_gh_publish_v1'); } catch (_) {}
-  window.HabibaMoments=Array.from({length:5},(_,i)=>({id:'moment-'+(i+1),title:['A little glow','Everyday beauty','Your daily ritual','Beauty in motion','The Habiba edit'][i],src:'media/moment-'+(i+1)+'.mp4',poster:'media/moment-'+(i+1)+'.jpg',start:0,end:7}));
+  window.HabibaMoments=Array.from({length:5},(_,i)=>({id:'moment-'+(i+1),title:['A little glow','Everyday beauty','Your daily ritual','Beauty in motion','The Habiba edit'][i],src:'moment-'+(i+1)+'.mp4',poster:'media/moment-'+(i+1)+'.jpg',start:0,end:7}));
   async function uploadVideo(file){
     if(file.size>30*1024*1024)throw Error('اختار فيديو أقل من 30 MB.');
     if(!['video/mp4','video/webm'].includes(file.type))throw Error('اختار MP4 أو WebM.');
