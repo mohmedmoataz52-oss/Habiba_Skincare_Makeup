@@ -1,6 +1,6 @@
 (()=>{
  const A=HabibaCustomer,$=id=>document.getElementById(id);
- $('customerLogout').onclick=async()=>{await A.logout();location.href='Auth.html';};
+ $('customerLogout').onclick=async()=>{await A.logout();location.href='index.html';};
  (async()=>{
   try{const user=await A.user();$('customerIdentity').textContent=user.email;
    const [profiles,orders]=await Promise.all([A.rows('habiba_customers?select=*&id=eq.'+encodeURIComponent(user.id)),A.rows('habiba_orders?select=id,details,status,created_at&order=created_at.desc&customer_id=eq.'+encodeURIComponent(user.id))]);

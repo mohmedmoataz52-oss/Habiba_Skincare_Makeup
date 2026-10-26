@@ -59,3 +59,15 @@ body.habiba-photo-bg::before {
   .bundles-ticker .habiba-marquee {animation:none !important;}
   .product-card,.product-image img,.hero-slide {transition:none !important;}
 }
+
+/* Keep the final menu links reachable above the fixed mobile purchase bar. */
+@media (max-width:650px) {
+  .sidebar {height:100vh;height:100dvh;overflow:hidden !important;box-sizing:border-box;}
+  .sidebar > .sidebar-top,.sidebar > .sidebar-head {flex-shrink:0;}
+  .sidebar > .sidebar-content {
+    flex:1 1 auto;min-height:0;overflow-y:auto !important;
+    padding-bottom:calc(110px + env(safe-area-inset-bottom,0px)) !important;
+    scroll-padding-bottom:calc(110px + env(safe-area-inset-bottom,0px));
+    overscroll-behavior-y:contain;-webkit-overflow-scrolling:touch;
+  }
+}
