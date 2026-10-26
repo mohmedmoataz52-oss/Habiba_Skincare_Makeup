@@ -83,3 +83,35 @@ html body .bundles-hero+.bundles-ticker{margin:0!important;border-radius:0!impor
  html body .bundles-hero .hero-copy p{font-size:12px!important;line-height:1.5!important}
  html body .bundles-hero .eyebrow{font-size:8px!important;letter-spacing:1px!important}
 }
+/* v12: mobile props use real dimensions, anchored inside a safe right column.
+   Avoid left percentages combined with scale's original transform origin. */
+html body .beauty-scene[data-kind=Perfume] .orb{display:none!important}
+@media(max-width:650px){
+ html body .beauty-scene .vessel,
+ html body .beauty-scene[data-kind=Perfume] .vessel,
+ html body .beauty-scene[data-kind=haircare] .vessel,
+ html body .beauty-scene[data-kind=bodycare] .vessel,
+ html body .beauty-scene[data-kind=underarm-bikini] .vessel,
+ html body .beauty-scene[data-kind=Makeup] .vessel{left:auto!important;right:22px!important;top:30%!important;width:65px!important;height:135px!important;scale:1!important;transform:none!important;transform-origin:center!important;border-radius:10px 10px 16px 16px!important;animation:habibaSafeFloat 8s ease-in-out infinite!important}
+ html body .beauty-scene .vessel::before{height:25px!important}
+ html body .beauty-scene[data-kind=bodycare] .vessel,
+ html body .beauty-scene[data-kind=underarm-bikini] .vessel{width:82px!important;height:64px!important;top:43%!important}
+ html body .beauty-scene[data-kind=bodycare] .vessel::before,
+ html body .beauty-scene[data-kind=underarm-bikini] .vessel::before{height:14px!important}
+ html body .beauty-scene[data-kind=Perfume] .vessel{width:78px!important;height:95px!important;top:37%!important;background:linear-gradient(105deg,#f2bbd4bb,#fff0f6cc 45%,#d993b6cc)!important}
+ html body .beauty-scene[data-kind=Makeup] .vessel{width:43px!important;height:95px!important;top:39%!important}
+ html body .beauty-scene[data-kind=Makeup] .vessel::before{height:46px!important}
+ html body .beauty-scene .vessel .vessel-logo{top:24%!important;left:12%!important;width:76%!important;height:55%!important}
+ html body .beauty-scene .orb{left:auto!important;right:27px!important;top:77%!important;width:63px!important;height:23px!important;scale:1!important;animation:habibaSafeFloat 10s ease-in-out infinite reverse!important}
+ html body .beauty-scene .scene-disc{left:auto!important;right:9px!important;width:110px!important;height:26px!important;bottom:13%!important}
+ html.motion-ready body .hero .hero-copy,html.motion-ready body .hero>.hero-content{width:calc(100% - 130px)!important;max-width:calc(100% - 130px)!important;left:20px!important}
+ html.motion-ready body .hero .eyebrow,html.motion-ready body .hero .hero-kicker{white-space:normal!important;line-height:1.6!important;letter-spacing:1.1px!important}
+ html.motion-ready body .hero .hero-shop{font-size:8px!important;letter-spacing:.6px!important;padding:11px 9px!important;gap:6px!important;white-space:nowrap}
+ html body .bundles-hero{height:240px!important;grid-template-columns:minmax(0,43%) minmax(0,57%)!important;overflow:hidden!important}
+ html body .bundles-hero .hero-photo{object-position:65% center!important}
+ html body .bundles-hero .hero-copy{min-width:0!important;overflow-wrap:break-word!important}
+ html body .bundles-hero .hero-copy h1{font-size:27px!important}
+ html body .bundles-hero+.bundles-ticker{border-top:0!important;border-bottom:0!important}
+}
+@keyframes habibaSafeFloat{0%,100%{translate:0 0;rotate:0deg}50%{translate:0 -7px;rotate:1deg}}
+@media(prefers-reduced-motion:reduce){html body .beauty-scene .vessel,html body .beauty-scene .orb{animation:none!important}}
