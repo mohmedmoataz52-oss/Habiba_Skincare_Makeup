@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en">
+<html lang="en" class="motion-ready">
 
 <head>
 <script src="backend-config.js"></script>
@@ -2051,6 +2051,7 @@ h1,h2,h3,.serif,.hero-content h1,.section-heading h2,.hero h1{
 </style>
 
 <link rel="stylesheet" href="habiba-v5.css">
+<link rel="stylesheet" href="hero-motion.css?v=8">
 </head>
 
 <body class="habiba-photo-bg">
@@ -2128,11 +2129,7 @@ h1,h2,h3,.serif,.hero-content h1,.section-heading h2,.hero h1{
 </nav>
   <!-- Category hero: swap image URL with your final banner when ready -->
   <section class="hero">
-    <img class="hero-photo" fetchpriority="high" decoding="async"
-      src="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=1400&q=90"
-      srcset="https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=700&q=80 700w, https://images.unsplash.com/photo-1608248543803-ba4f8c70ae0b?w=1400&q=90 1400w"
-      sizes="(max-width: 650px) 34vw, 40vw"
-      alt="Skincare products and face care essentials">
+    
     <div class="hero-copy">
       <div class="eyebrow" id="heroEyebrow">HABIBA SKINCARE COLLECTION</div>
       <h1 id="heroTitle">Skin Care</h1>
@@ -2279,7 +2276,7 @@ h1,h2,h3,.serif,.hero-content h1,.section-heading h2,.hero h1{
     const $ = id => document.getElementById(id);
     function initPage() {
       $("heroTitle").textContent = PAGE_CONFIG.title; $("heroSubtitle").textContent = PAGE_CONFIG.subtitle; $("heroEyebrow").textContent = PAGE_CONFIG.eyebrow;
-      document.querySelector(".hero-photo").src = PAGE_CONFIG.heroImage; $("breadcrumbCategory").textContent = PAGE_CONFIG.title; $("searchInput").placeholder = PAGE_CONFIG.searchPlaceholder; document.title = PAGE_CONFIG.title + " | Habiba Skin Care";
+       $("breadcrumbCategory").textContent = PAGE_CONFIG.title; $("searchInput").placeholder = PAGE_CONFIG.searchPlaceholder; document.title = PAGE_CONFIG.title + " | Habiba Skin Care";
       const brands = [...new Set(PRODUCTS.map(p => p.brand))]; $("brandFilters").innerHTML = brands.map(b => `<label class="checkrow"><input type="checkbox" value="${HabibaHTML(b)}"><span>${HabibaHTML(b)}</span><em>(${PRODUCTS.filter(p => p.brand === b).length})</em></label>`).join("");
       $("brandFilters").querySelectorAll("input").forEach(input => input.addEventListener("change", () => {input.checked ? selectedBrands.add(input.value) : selectedBrands.delete(input.value); renderProducts()}));
       renderProducts();
@@ -2465,6 +2462,6 @@ h1,h2,h3,.serif,.hero-content h1,.section-heading h2,.hero h1{
 </script>
 
 <link rel="stylesheet" href="habiba-v6.css">
-<link rel="stylesheet" href="hero-motion.css"><script src="hero-motion.js"></script></body>
+<script src="hero-motion.js?v=8"></script></body>
 
 </html>

@@ -65,5 +65,14 @@
   }
   // Legacy GitHub tokens are no longer used or kept by this dashboard.
   try { localStorage.removeItem('habiba_gh_publish_v1'); } catch (_) {}
-  window.HabibaBackend = {configured,read,save,signIn,signOut,isAdmin};
+  window.HabibaMoments=Array.from({length:5},(_,i)=>({id:'moment-'+(i+1),title:['A little glow','Everyday beauty','Your daily ritual','Beauty in motion','The Habiba edit'][i],src:'media/moment-'+(i+1)+'.mp4',poster:'media/moment-'+(i+1)+'.jpg',start:0,end:7}));
+  async function uploadVideo(file){
+    if(file.size>30*1024*1024)throw Error('اختار فيديو أقل من 30 MB.');
+    if(!['video/mp4','video/webm'].includes(file.type))throw Error('اختار MP4 أو WebM.');
+    const token=await access(),path=crypto.randomUUID()+(file.type==='video/mp4'?'.mp4':'.webm');
+    const res=await fetch(url+'/storage/v1/object/habiba-reels/'+path,{method:'POST',headers:{apikey:key,Authorization:'Bearer '+token,'Content-Type':file.type},body:file});
+    if(!res.ok)throw Error('تعذر رفع الفيديو؛ شغّل reels-storage.sql وراجع صلاحيات الإدارة.');
+    return url+'/storage/v1/object/public/habiba-reels/'+path;
+  }
+  window.HabibaBackend = {configured,read,save,signIn,signOut,isAdmin,uploadVideo};
 })();

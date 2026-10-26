@@ -347,6 +347,7 @@ h1,h2,h3,.serif,.hero-content h1,.section-heading h2,.hero h1{
 </style>
 
 <link rel="stylesheet" href="habiba-v5.css">
+<link rel="stylesheet" href="hero-motion.css?v=8">
 </head>
 <body>
 
@@ -377,7 +378,7 @@ h1,h2,h3,.serif,.hero-content h1,.section-heading h2,.hero h1{
 <section id="view-backup" class="hidden"><div class="panel"><div class="panel-head"><div><h2>Backup & export</h2><p class="sub">Keep a portable copy of products, settings, and uploaded product images.</p></div></div><div class="settings-grid"><div class="filebox"><div style="font-size:26px">⇩</div><b>Export a backup bundle</b><p class="sub">Downloads a JSON file containing your products, settings, and any uploaded images stored by this dashboard.</p><button class="btn-primary" id="exportBackup">Export backup</button><div style="height:8px"></div><button class="btn-light" id="exportStoreConfig">Export storefront config</button></div><div class="filebox"><div style="font-size:26px">⇧</div><b>Restore from backup</b><p class="sub">Import a previously exported JSON backup. This replaces the current dashboard data after confirmation.</p><input type="file" id="importFile" accept=".json,application/json"><div style="height:10px"></div><button class="btn-light" id="importBackup">Import selected backup</button></div></div><div class="notice" style="margin-top:18px;margin-bottom:0">Important: browser storage is not a substitute for a backup. Export regularly and keep the downloaded file safe. The current browser data and exported bundle are separate copies.</div></div><div class="panel"><div class="panel-head"><div><h2>Data summary</h2><p class="sub">Current local workspace information.</p></div></div><div id="backupSummary"></div><button class="btn-light" id="migrateLocal">استيراد منتجات المتصفح القديمة</button><button class="btn-danger" id="resetData" style="margin-top:14px">Reset dashboard data</button></div></section>
 </main></div>
 <div id="modalRoot"></div><div id="toast" class="toast hidden" role="status"></div>
-<script src="dashboard.js"></script>
+<script src="dashboard.js"></script><script src="reels-admin.js"></script>
 <link rel="stylesheet" href="habiba-v6.css">
-<link rel="stylesheet" href="hero-motion.css"><script src="hero-motion.js"></script></body>
+<script src="hero-motion.js?v=8"></script></body>
 </html>
