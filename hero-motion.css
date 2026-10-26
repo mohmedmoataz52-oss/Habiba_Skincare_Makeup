@@ -1,0 +1,27 @@
+.hero:has(.beauty-scene){margin:0!important;border-radius:0!important;width:100%;height:570px!important;max-height:none!important;display:block;isolation:isolate;background:#edd4cd;box-shadow:none}
+.hero:has(.beauty-scene)+.bundles-ticker{margin:0!important;padding:9px 0!important;background:#b99589!important;color:#fffaf5!important;font:500 11px var(--sans)!important;letter-spacing:1.5px!important}
+.beauty-scene{position:absolute;inset:0;overflow:hidden;background:radial-gradient(ellipse at 66% 28%,#fffaf1,transparent 50%),linear-gradient(120deg,#bd938c,#f3d9cc 60%,#ceac99);z-index:-1}
+.beauty-scene::before{content:'';position:absolute;inset:-30%;background:linear-gradient(115deg,transparent 40%,#ffffff55 48%,transparent 57%);animation:beautyLight 12s ease-in-out infinite}
+.beauty-scene .vessel{position:absolute;left:64%;top:29%;width:115px;height:210px;border-radius:18px 18px 30px 30px;background:linear-gradient(100deg,#ffffffcc,#ead7b6cc 35%,#fff8e7dd 50%,#b5907c99);box-shadow:18px 28px 35px #744e4430,inset 3px 0 4px #fff;animation:beautyFloat 9s ease-in-out infinite}
+.beauty-scene .vessel::before{content:'';position:absolute;bottom:100%;left:25%;width:50%;height:50px;border-radius:9px 9px 0 0;background:linear-gradient(90deg,#ac8171,#f5e1bd,#b49273)}
+.beauty-scene .vessel::after{content:'';position:absolute;inset:35% 18%;border:1px solid #fff6;border-radius:50%}
+.beauty-scene .orb{position:absolute;left:48%;top:63%;width:145px;height:65px;border-radius:50%;background:linear-gradient(15deg,#b18d7a,#fff0dc);box-shadow:12px 22px 30px #744e4430;animation:beautyFloat 11s ease-in-out infinite reverse}
+.beauty-scene[data-kind=Makeup] .vessel{width:60px;height:150px;background:linear-gradient(90deg,#a84c59,#f7a9a9,#b5666c);transform:rotate(-12deg)}
+.beauty-scene[data-kind=Makeup] .vessel::before{height:90px;background:linear-gradient(90deg,#8b3348,#d4858a,#a7485c);border-radius:30px 12px 0 0}
+.beauty-scene[data-kind=Perfume] .vessel{width:170px;height:170px;border-radius:10px;background:linear-gradient(110deg,#fff8,#d7a46088,#fff9)}
+.beauty-scene[data-kind=haircare] .vessel{height:250px;border-radius:30px;background:linear-gradient(90deg,#b07b59,#f3d2a0,#b4865f)}
+.beauty-scene[data-kind=bodycare] .vessel,.beauty-scene[data-kind=underarm-bikini] .vessel{height:100px;width:160px;border-radius:20px;top:45%}
+.beauty-scene[data-kind=bodycare] .vessel::before,.beauty-scene[data-kind=underarm-bikini] .vessel::before{width:110%;left:-5%;height:28px}
+.hero:has(.beauty-scene) .hero-copy,.hero:has(.beauty-scene) .hero-content{position:absolute;left:8%;bottom:14%;top:auto;right:auto;max-width:48%;text-align:left;padding:0;z-index:2;color:#513735}
+.hero:has(.beauty-scene) .hero-mark{display:none}
+.hero-shop{display:inline-flex;align-items:center;gap:12px;border:1px solid #79534d;background:#fff4e455;padding:14px 22px;margin-top:20px;font:500 11px var(--sans);letter-spacing:2px}
+.real-life{padding:64px 20px;background:#fff8f4}.real-life h2{text-align:center;font:36px var(--serif);margin-bottom:10px}.real-life>p{text-align:center;color:#8f7069;margin-bottom:28px}.real-life-row{display:flex;gap:16px;overflow-x:auto;scroll-snap-type:x mandatory;max-width:1200px;margin:auto;padding-bottom:14px}.reel-card{flex:0 0 220px;aspect-ratio:9/14;scroll-snap-align:start;background:linear-gradient(145deg,#e7c5bb,#f5e4d3);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;color:#634540}.reel-card strong{font:60px var(--serif)}.reel-card span{font-size:12px}.reel-card small{font-size:10px;opacity:.7}
+@keyframes beautyFloat{50%{translate:0 -18px;rotate:3deg}}@keyframes beautyLight{50%{translate:12% 0}}
+@media(max-width:650px){.hero:has(.beauty-scene){height:520px!important}.beauty-scene .vessel{left:60%;top:20%;scale:.8}.beauty-scene .orb{left:45%;top:54%;scale:.8}.hero:has(.beauty-scene) .hero-copy,.hero:has(.beauty-scene) .hero-content{left:7%;bottom:10%;max-width:85%}.hero:has(.beauty-scene) h1{font-size:40px!important}.reel-card{flex-basis:70vw;max-width:260px}}
+@media(prefers-reduced-motion:reduce){.beauty-scene *,.beauty-scene::before{animation:none!important}}
+
+.reel-card{position:relative;background:#ead8d1;overflow:hidden;flex-shrink:0}.reel-card video{width:100%;height:100%;object-fit:contain;background:#ead8d1;display:block}.reel-toggle{position:absolute;right:12px;bottom:12px;width:44px;height:44px;border:1px solid #fff7;background:#513735aa;color:white;border-radius:50%;font-size:18px;cursor:pointer}
+.beauty-scene[data-kind=skincare] .vessel::before{height:75px;width:30%;left:35%;border-radius:25px 25px 0 0;background:linear-gradient(90deg,#d5b7a0,#fff3df,#c7a78e)}
+.beauty-scene[data-kind=underarm-bikini]{background:radial-gradient(ellipse at 68% 30%,#fffdf2,transparent 60%),linear-gradient(110deg,#c2aa9c,#f5e4d2)}
+.beauty-scene[data-kind=haircare] .orb{width:180px;height:18px;rotate:-20deg;border-radius:50%;background:linear-gradient(90deg,transparent,#794f31,#d8af78,transparent)}
+.beauty-scene[data-kind=Perfume] .orb{width:150px;height:150px;top:38%;left:58%;border:1px solid #fff7;background:transparent;border-radius:50%;animation:beautyFloat 12s ease-in-out infinite}

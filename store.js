@@ -243,7 +243,7 @@
       stock: p.stock,
       category: p.category,
       shade: p.shade || '',
-      tag: onSale ? 'Sale' : 'New',
+      tag: p.bestSeller ? 'Best Seller' : (onSale ? 'Sale' : 'New'),
       image: p.image || '',
       description: p.description || '',
       fromDashboard: true
